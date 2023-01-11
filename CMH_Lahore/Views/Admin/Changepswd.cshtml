@@ -1,0 +1,74 @@
+﻿@model passwordchanger
+
+<!doctype html>
+<html>
+
+<partial name="_Header"></partial>
+
+<body>
+
+    <div class="flex flex-col w-screen h-screen justify-center items-center">
+        <div class="flex flex-row justify-evenly items-center w-screen h-screen">
+            <div class="w-2/12">
+                <img src="/img/adminLogo.png">
+            </div>
+            <div>
+                <!-- create a vertical divider here -->
+                <div class="border-r-2 border-[#2F6A50] h-80"></div>
+            </div>
+            <div class="flex flex-col w-4/12 h-11/12 items-start">
+                <div class="flex flex-row justify-start items-center w-full">
+                    <button onclick="window.location.href = './Dashboard.php';"
+                            class="w-36 rounded-xl text-xl font-semibold text-[#1B4332] hover:cursor-pointer mb-5 text-left ml-2">
+                        <span><i class="fa-solid fa-angle-left"></i></span> Back
+                    </button>
+                </div>
+                <form method="POST" asp-controller="Admin" asp-action="Changepswd" id="changepswdform"
+                      class="flex flex-col w-full h-full p-12 rectBox">
+                    <div asp-validation-summary="All"></div>
+                    <h1 class="text-2xl font-semibold text-[#2F6A50] mt-5">Change Password</h1>
+                    <input type="password" placeholder="Old Password" id="OldPassword" name="OldPassword" asp-for="OldPassword"
+                           class="w-full text-xl mt-10 p-5 bg-[#FAFFFA] rounded-lg placeholder-[#43916DCC] text-[#2F6A50]">
+                    <input type="password" placeholder="New Password" id="NewPassword" name="NewPassword" asp-for="NewPassword"
+                           class="w-full text-xl mt-10 p-5 bg-[#FAFFFA] rounded-lg placeholder-[#43916DCC] text-[#2F6A50]">
+                    <input type="password" placeholder="Retype New Password" id="ConfirmPassword" name="ConfirmPassword" asp-for="ConfirmPassword"
+                           class="w-full text-xl mt-10 p-5 bg-[#FAFFFA] rounded-lg placeholder-[#43916DCC] text-[#2F6A50]">
+                    <button type="submit" onsubmit="pswdvalidation()"
+                            class="w-full text-xl mt-12 p-5 bg-[#2F6A50] text-[#D8F3DC] font-semibold rounded-lg text-[#2F6A50] hover:cursor-pointer">
+                        Change Password
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    function handleroute() {
+        if (pswdvalidation()) { let form = document.getElementById('changepswdform'); form.submit(); }
+    }
+    function pswdvalidation() {
+        var field1 = document.getElementById('NewPassword').value;
+        var field2 = document.getElementById('ConfirmPassword').value;
+        var field3 = document.getElementById('OldPassword').value;
+        if (field3 == "") {
+            alert("Please enter your old password");
+            return false;
+        }
+        else if (field1 == "" || field2 == "") {
+            alert("Please fill all the fields");
+            return false;
+        }
+        else if (field1 != field2) {
+            alert("New Passwords do not match");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>
+
+</html>

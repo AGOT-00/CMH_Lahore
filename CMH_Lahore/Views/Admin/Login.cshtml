@@ -1,0 +1,92 @@
+﻿@model AdminDT
+@* Here Comments Are Enterred*@
+@{
+    //We dont Need any Heirarchy Here
+    Layout = "";
+}
+@using System.Security.Claims
+
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/Tailwind.js"></script>
+    <link rel="stylesheet" href="/Custom.css">
+</head>
+
+<body>
+    <div class="flex flex-col w-screen h-screen justify-center items-center">
+        <div class="flex flex-row justify-evenly items-center w-screen h-screen">
+            <div class="w-2/12">
+                <img src="/img/adminLogo.png">
+            </div>
+            <div>
+                <!-- create a vertical divider here -->
+                <div class="border-r-2 border-[#2F6A50] h-80"></div>
+            </div>
+            <div class="flex flex-col w-4/12 h-11/12 items-start">
+                <div class="flex flex-row justify-start items-center w-full">
+                    <button onclick="window.location.href = '../';"
+                            class="w-36 rounded-xl text-xl font-semibold text-[#1B4332] hover:cursor-pointer mb-5 text-left ml-2">
+                        <span><i class="fa-solid fa-angle-left"></i></span> Back
+                    </button>
+                </div>
+
+                <form name="f1" class="flex flex-col w-full h-full p-12 rectBox" asp-controller="Admin" asp-action="Login"
+                      method="POST">
+
+                    <h1 class="text-2xl font-semibold text-[#2F6A50] mt-5">Login</h1>
+
+                    @{
+                                //class="w-full mt-2 p-5 bg-[#FAFFFA] rounded-lg text-red-900 text-center"
+                    }
+                   <div asp-validation-summary="All"></div>
+
+                    <div>
+                        <input type="text" placeholder="AdminID" id="ID" name="ID"
+                               class="w-full text-xl mt-10 p-5 bg-[#FAFFFA] rounded-lg placeholder-[#43916DCC] text-[#2F6A50]">
+                    </div>
+
+                    <div>
+                        <input type="password" placeholder="Password" id="Password" name="Password"
+                               class="w-full text-xl mt-10 p-5 bg-[#FAFFFA] rounded-lg placeholder-[#43916DCC] text-[#2F6A50]">
+                    </div>
+
+                    <input type="submit" value="Login" onclick="validation()"
+                           class="w-full text-xl mt-12 p-5 bg-[#2F6A50] text-[#D8F3DC] font-semibold rounded-lg text-[#2F6A50] hover:cursor-pointer">
+                    <input type="button" value="Forget Password?" onclick="fp()"
+                           class="w-full text-xl mt-12 text-[#2F6A50] items-center underline font-semibold rounded-lg text-[#2F6A50] hover:cursor-pointer">
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function fp() {
+            alert("Contact Admin");
+        }
+        function validation() {
+            var id = document.f1.user.value;
+            var ps = document.f1.pass.value;
+            if (id.length == "" && ps.length == "") {
+                alert("User Name and Password fields are empty");
+                return false;
+            }
+            else {
+                if (id.length == "") {
+                    alert("User Name is empty");
+                    return false;
+                }
+                if (ps.length == "") {
+                    alert("Password field is empty");
+                    return false;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

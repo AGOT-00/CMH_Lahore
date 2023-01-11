@@ -1,0 +1,72 @@
+﻿@model IEnumerable<CMH_Lahore.Models.Complaint>
+
+@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<html>
+
+<partial name="_Header"></partial>
+
+<body>
+    <div class="flex flex-row w-screen h-screen">
+        
+        <partial name="AdminPanel"></partial>
+        <div class="flex flex-col w-full px-24">
+            <div class="overflow-x-auto relative mt-24">
+                <table class="w-full font-semibold text-[#D8F3DC] bg-[#2F6A50] text-left">
+                    <thead class="text-lg text-[#D8F3DC] bg-[#2F6A50]">
+                        <tr>
+                            <th scope="col" class="py-3 px-6 font-semibold">
+                                Sr. Number
+                            </th>
+                            <th scope="col" class="py-3 px-6 font-semibold">
+                                Name of the Complainant
+                            </th>
+                            <th scope="col" class="py-3 px-6 font-semibold">
+                                Phone Number
+                            </th>
+                            <th scope="col" class="py-3 px-6 font-semibold">
+                                Date of Complaint
+                            </th>
+                            <th scope="col" class="py-3 px-6 font-semibold">
+                                Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr class="bg-[#D8F3DC] text-[#1B4332] border-b-2 border-[#1B4332]">
+                                <td class="py-4 px-6 text-lg">
+                                    @item.id
+                                </td>
+                                <td class="py-4 px-6 text-lg">
+                                    @item.cname
+                                </td>
+                                <td class="py-4 px-6 text-lg">
+                                    @item.phone
+                                </td>
+                                <td class="py-4 px-6 text-lg">
+                                    @item.DOC
+                                </td>
+                                <td class="py-4 pl-6">
+                                    <form asp-action="ComplaintDetail" asp-controller="Admin" asp-route-id="@item.id" method="get">
+                                        <button id="view" name="view" type="submit"
+                                            class="bg-[#2F6A50] text-[#D8F3DC] hover:bg-[#1B4332] hover:cursor-pointer p-2 rounded-xl">
+                                            View
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>

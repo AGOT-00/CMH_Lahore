@@ -1,0 +1,8 @@
+﻿@model IEnumerable<CMH_Lahore.Models.Department>
+
+<select name="DepartmentID">
+    @foreach (var item in Model)
+    {
+        <option value="@item.id">@item.Departmentname</option>
+    }
+</select>

@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+.rectBox {
+  background: #d8f3dc;
+  border-radius: 30px;
+}
+
+::-webkit-datetime-edit-text { color: rgba(67, 145, 109, 0.8); padding: 0 0.3em; }
+::-webkit-datetime-edit-month-field { color: rgba(67, 145, 109, 0.8); }
+::-webkit-datetime-edit-day-field { color: rgba(67, 145, 109, 0.8); }
+::-webkit-datetime-edit-year-field { color: rgba(67, 145, 109, 0.8); }
+::-webkit-inner-spin-button { display: none; }
+::-webkit-calendar-picker-indicator { 
+    background-image: url('');
+    background-size: 20px 20px;
+    width: 20px;
+    height: 20px;
+    margin: 0 0.3em;
+    cursor: pointer;
+ }
+
+.topBar {
+    background: #2F6A50;
+    border-radius: 48px;
+}
+
+.circle {
+    background: #D8F3DC;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.hidden {
+  /* hide the form*/
+  display: none;
+}
+
+.docForm{
+  /* show the form*/
+  display: block;
+}

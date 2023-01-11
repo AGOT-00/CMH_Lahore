@@ -1,0 +1,67 @@
+﻿@model IEnumerable<CMH_Lahore.Models.Department>
+
+@{
+    Layout = "";
+    ViewData["currentPage"] = "Department";
+
+}
+
+
+<!DOCTYPE html>
+<html>
+
+<partial name="_Header"></partial>
+
+<body>
+
+    <partial name="AdminPanel" />
+    <div class="flex flex-row w-screen h-screen">
+        <div class="flex flex-col w-full px-24">
+            <div class="overflow-x-auto relative mt-24">
+                <table class="w-full font-semibold text-[#D8F3DC] bg-[#2F6A50] text-left">
+                    <thead class="text-lg text-[#D8F3DC] bg-[#2F6A50]">
+                        <tr>
+                            <th scope="col" class="py-3 px-6 font-semibold">
+                                Sr. Number
+                            </th>
+                            <th scope="col" class="py-3 px-6 font-semibold">
+                                Department Name
+                            </th>
+                            <th scope="col" class="py-3 px-6 font-semibold">
+                                Delete
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 0;
+                            foreach(var item in Model)
+                            {
+                                i++;
+                                <tr class="bg-[#D8F3DC] text-[#1B4332] border-b-2 border-[#1B4332]">
+                                    <td class="py-4 px-6 text-lg ">
+                                        @i
+                                    </td>
+                                    <td class="py-4 px-6 text-lg">
+                                        @item.Departmentname
+                                    </td>
+                                    <td class="py-2 px-4 text-lg">
+                                            <a asp-controller="Admin" asp-action="DeleteDepartment" asp-route-id="@item.id">
+                                        <button type="submit" name="Delete"
+                                                class="w-fit h-fit rounded-xl text-xl hover:bg-[#2F6A50] font-semibold bg-[#1B4332] text-[#D8F3DC] hover:cursor-pointer p-5 text-center">
+                                            Delete
+                                        </button>
+                                                 </a>
+                                    </td>
+                                </tr>
+                            }
+                          }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
