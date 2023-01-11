@@ -90,9 +90,16 @@
                                 {
                                     <span>
                                         @{
-                                            string Depart = Model.DepartmentList.FirstOrDefault(d => d.id == Model.Comp.Department).Departmentname;
+                                            var Depart = Model.DepartmentList.FirstOrDefault(d => d.id == Model.Comp.Department);
+                                            if (Depart != null)
+                                            {
+                                                @Depart.Departmentname
+                                            }
+                                            else
+                                            {
+                                                <h>Error</h>
+                                            }
                                         }
-                                        @Depart
                                     </span>
                                 }
 
@@ -169,7 +176,7 @@
                                     @Model.ifexplained.explain
                                 }
                                 </textarea>
-                            @Model.Comp.ComplaintType
+                                <h1>Complaint Type : </h1>@Model.Comp.ComplaintType
                             ;
                         }
 
@@ -180,7 +187,7 @@
 
                     <form asp-action="savecommandentcomment" asp-asp-controller="Admin" asp-route-id="@Model.Comp.id">
                         @{
-                            if (Model.Access != "ComplaintOfficer")
+                            if (Model.Access != "ComplaintOfficer" && Model.ifcommented != null)
                             {
                                 <!-- create horizontal divider-->
 
