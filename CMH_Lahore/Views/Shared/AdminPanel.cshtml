@@ -1,50 +1,98 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@@*
+<aside class="w-1/5 h-screen bg-white">
+    <div class="flex flex-col justify-center items-center h-1/4">
+        <img src="/img/adminLogo.png" class="w-1/2" />
+    </div>
+    <div class="flex flex-col w-full justify-around items-center h-3/4">
+        <div class="flex flex-col items-center w-full">
+            @{
+                string Selected = "bg-[#D8F3DC]";
+                string ComplaintStyle = "w-full text-xl font-semibold text-[#1B4345] mb-5 p-5 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
+                string PendingStyle00 = "w-full text-xl font-semibold text-[#1B4332] mb-5 p-5 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
+                string ClosedStyle000 = "w-full text-xl font-semibold text-[#1B4332] mb-5 p-5 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
+
+                //if(ViewData["currentPage"]=="Department")
+                //{
+
+                //}
+                //else
+                //{
+
+                //}
+                <div class="@ComplaintStyle">
+                    Complaints
+                </div>
+                <button onclick="window.location.href = './Dashboard.php';" class="@PendingStyle00">
+                    Pending
+                </button>
+                <button onclick="window.location.href = './closedcomplaint.php';"
+                        class="@ClosedStyle000">
+                    Closed
+                </button>
+            }
+        </div>
+        <!-- logout button at bottom-->
+        <div class="flex flex-col items-center w-full">
+            <button type="button" asp-action="Logout" asp-controller="Admin"
+                    class="w-3/6 rounded-xl text-xl hover:bg-[#2F6A50] font-semibold bg-[#1B4332] text-[#D8F3DC] hover:cursor-pointer p-5 text-center">
+                Logout
+            </button>
+        </div>
+    </div>
+</aside>
+<!--create verttical divider with h-screen -->
+<div class="border-r-2 border-[#2F6A50] h-full">
+</div>
 *@
 
-<div class="flex flex-row w-screen h-screen">
-    <aside class="w-1/5 h-screen bg-white">
-        <div class="flex flex-col justify-center items-center h-1/4">
-            <img src="/img/adminLogo.png" class="w-1/2" />
+@{
+
+}
+<aside class="w-1/5 h-screen bg-white">
+    <div class="flex flex-col justify-center items-center h-1/4">
+        <img src="/img/adminLogo.png" class="w-2/5" />
+    </div>
+    <div class="flex flex-col w-full justify-around items-center h-3/4">
+        <div class="flex flex-col items-center w-full">
+            @{
+                string Selected = "bg-[#D8F3DC]";
+                string ComplaintStyle = "w-full text-xl font-semibold text-[#1B4345] mb-5 p-3 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
+                string PendingStyle00 = "w-full text-xl font-semibold text-[#1B4332] mb-5 p-3 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
+                string ClosedStyle000 = "w-full text-xl font-semibold text-[#1B4332] mb-5 p-3 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
+
+                //if(ViewData["currentPage"]=="Department")
+                //{
+
+                //}
+                //else
+                //{
+
+                //}
+                <div class="@ComplaintStyle">
+                    Complaints
+                </div>
+                <button onclick="window.location.href = './Dashboard.php';" class="@PendingStyle00">
+                    Pending
+                </button>
+                <button onclick="window.location.href = './closedcomplaint.php';"
+                        class="@ClosedStyle000">
+                    Closed
+                </button>
+            }
         </div>
-        <div class="flex flex-col w-full justify-around items-center h-3/4">
-            <div class="flex flex-col items-center w-full">
-                @{
-                        string Selected = "bg-[#D8F3DC]";
-                        string ComplaintStyle = "w-full text-xl font-semibold text-[#1B4345] mb-5 p-5 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
-                        string PendingStyle00 = "w-full text-xl font-semibold text-[#1B4332] mb-5 p-5 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
-                        string ClosedStyle000 = "w-full text-xl font-semibold text-[#1B4332] mb-5 p-5 text-center hover:cursor-pointer hover:bg-[#D8F3DC]";
-
-                        //if(ViewData["currentPage"]=="Department")
-                        //{
-
-                        //}
-                        //else
-                        //{
-
-                        //}
-                        <div class="@ComplaintStyle">
-                            Complaints
-                        </div>
-                        <button onclick="window.location.href = './Dashboard.php';" class="@PendingStyle00">
-                            Pending
-                        </button>
-                        <button onclick="window.location.href = './closedcomplaint.php';"
-                                class="@ClosedStyle000">
-                            Closed
-                        </button>
-                    }
-            </div>
-            <!-- logout button at bottom-->
-            <div class="flex flex-col items-center w-full">
-                <button type="button" asp-action="Logout" asp-controller="Admin"
-                        class="w-3/6 rounded-xl text-xl hover:bg-[#2F6A50] font-semibold bg-[#1B4332] text-[#D8F3DC] hover:cursor-pointer p-5 text-center">
+        <!-- logout button at bottom-->
+        <div class="flex flex-col items-center w-full">
+            <a asp-action="Logout" asp-controller="Admin">
+                <button type="button"
+                        class="w-3/8 rounded-xl text-xl hover:bg-[#2F6A50] font-semibold bg-[#1B4332] text-[#D8F3DC] hover:cursor-pointer p-5 text-center">
                     Logout
                 </button>
-            </div>
+            </a>
         </div>
-    </aside>
-    <!--create verttical divider with h-screen -->
-    <div class="border-r-2 border-[#2F6A50] h-full">
     </div>
-
+</aside>
+<!--create vertical divider with h-screen -->
+<div class="border-r-2 border-[#2F6A50] h-full">
+</div>

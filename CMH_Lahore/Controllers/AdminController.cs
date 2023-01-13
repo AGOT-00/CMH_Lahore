@@ -34,8 +34,9 @@ namespace CMH_Lahore.Controllers
             {
                 try
                 {
+                    var objs1 = _DB.Admins.ToList();
                     var objs = _DB.Admins.FirstOrDefault(u => u.ID == admin.ID && u.Password == admin.Password);
-                    
+
                     if (objs != null)
                     {
                         SignedIn = AdminFactory.GetAdmin(objs);
@@ -133,10 +134,37 @@ namespace CMH_Lahore.Controllers
         }
 
         [HttpGet]
-        public IActionResult Complaints(string filter = "")
+        public IActionResult Complaints(IEnumerable<Complaint> ComplaintList, string filter = "")
         {
             if (SignedIn != null)
             {
+                //IEnumerable<Complaint> 
+                ComplaintList = SignedIn.GetListofComplaint(_DB);
+
+                //_DB.Complaints.ToList();
+
+                //switch (filter)
+                //{
+                //    case "DateASC":
+                //        ComplaintList = ComplaintList.OrderBy(c => c.DOI);
+                //        break;
+                //    case "Status":
+                //        ComplaintList = ComplaintList.OrderBy(c => c.status);
+                //        break;
+                //}
+
+                return View(ComplaintList);
+                return View();
+            }
+            return RedirectToAction("Login", "Admin");
+        }
+
+        [HttpPost]
+        public IActionResult Complaints(int id,IEnumerable<Complaint> Listing ,string filter = "")
+        {
+            if (SignedIn != null)
+            {
+                
                 IEnumerable<Complaint> ComplaintList = SignedIn.GetListofComplaint(_DB);//_DB.Complaints.ToList();
 
                 switch (filter)
@@ -155,6 +183,7 @@ namespace CMH_Lahore.Controllers
             return RedirectToAction("Login", "Admin");
         }
 
+
         [HttpGet]
         public IActionResult ComplaintDetail(int? ID)
         {
@@ -164,7 +193,7 @@ namespace CMH_Lahore.Controllers
                 if (DbObj != null)
                 {
                     IEnumerable<Department> ComplaintList = _DB.Departments.ToList();
-                    complaintdetaildt Obj = new(DbObj, ComplaintList, SignedIn.getadmintype(), _DB.Explainations.Find(ID),_DB.comments.Find(ID));
+                    complaintdetaildt Obj = new(DbObj, ComplaintList, SignedIn.getadmintype(), _DB.Explainations.Find(ID), _DB.comments.Find(ID));
                     return View(Obj);
                 }
             }
@@ -212,7 +241,7 @@ namespace CMH_Lahore.Controllers
                 {
                     comment Obj = new(id, SignedIn.Name, CommandentComment);
                     _DB.comments.Add(Obj);
-                    
+
                     _DB.SaveChanges();
                     return RedirectToAction("Complaints", "Admin");
                 }

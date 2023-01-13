@@ -43,7 +43,10 @@ namespace CMHLahore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("role")
+                    b.Property<int>("department")
+                        .HasColumnType("int");
+
+                    b.Property<int>("rank")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -73,14 +76,13 @@ namespace CMHLahore.Migrations
                     b.Property<DateTime>("DOI")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DOR")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Department")
                         .HasColumnType("int");
 
                     b.Property<string>("DocName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoomNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

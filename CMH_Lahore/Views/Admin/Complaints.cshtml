@@ -10,7 +10,7 @@
 
 <body>
     <div class="flex flex-row w-screen h-screen">
-        
+
         <partial name="AdminPanel"></partial>
         <div class="flex flex-col w-full px-24">
             <div class="overflow-x-auto relative mt-24">
@@ -18,14 +18,21 @@
                     <thead class="text-lg text-[#D8F3DC] bg-[#2F6A50]">
                         <tr>
                             <th scope="col" class="py-3 px-6 font-semibold">
-                                Sr. Number
+                                <form asp-action="Complaints" asp-controller="Admin" asp-route-Listing="@Model.ToList()" method="post">
+                                    <button type="submit">
+
+                                        Sr. Number
+
+                                    </button>
+                                </form>
+
                             </th>
                             <th scope="col" class="py-3 px-6 font-semibold">
-                                Name of the Complainant
+                                Complainant Name
                             </th>
-                            <th scope="col" class="py-3 px-6 font-semibold">
-                                Phone Number
-                            </th>
+                            @*<th scope="col" class="py-3 px-6 font-semibold">
+                            Phone Number
+                            </th>*@
                             <th scope="col" class="py-3 px-6 font-semibold">
                                 Date of Complaint
                             </th>
@@ -45,9 +52,9 @@
                                 <td class="py-4 px-6 text-lg">
                                     @item.cname
                                 </td>
-                                <td class="py-4 px-6 text-lg">
-                                    @item.phone
-                                </td>
+                                @*<td class="py-4 px-6 text-lg">
+                            @item.phone
+                            </td>*@
                                 <td class="py-4 px-6 text-lg">
                                     @item.DOC
                                 </td>
@@ -61,8 +68,8 @@
                                 </td>
                             </tr>
                         }
-                        
-                        
+
+
                     </tbody>
                 </table>
             </div>

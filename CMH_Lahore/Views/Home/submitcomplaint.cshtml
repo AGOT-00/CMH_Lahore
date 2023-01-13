@@ -1,35 +1,18 @@
+
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="..\res\Tailwind.js"></script>
-  <link rel="stylesheet" href="../res/Custom.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-</head>
+<partial name="_header"></partial>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 <body>
   <script src="https://kit.fontawesome.com/8ed36584a1.js" crossorigin="anonymous"></script>
 
-  <?php
-
-  session_start();
-  if (isset($_POST['submitcompform'])) {
-    include('./postdatatodb.php');
-  }
-
-  $Complaint_Done = false;
-  if (isset($_SESSION['check_post']) && isset($_SESSION['complaintno']) && $_SESSION['complaintno'] != 0) {
-    $Complaint_Done = true;
-  }
-
-  ?>
-
   <div class="flex flex-col w-screen h-screen justify-center items-center">
     <div class="flex flex-row justify-evenly items-center w-screen h-screen">
       <div class="w-2/12">
-        <img src="..\res\img\logo.png" />
+        <img src="~\img\logo.png" />
       </div>
       <div>
         <!-- create a vertical divider here -->

@@ -5,6 +5,7 @@
 *@
 
 @{
+    Layout = "";
 }
 <!DOCTYPE html>
 <html>
@@ -104,11 +105,11 @@
                                 }
 
                             </h1>
-                            <h1 class="text-lg text-[#1B4332]">
+                            @*<h1 class="text-lg text-[#1B4332]">
                                 Room Number: <span>
                                     @Model.Comp.RoomNo
                                 </span>
-                            </h1>
+                            </h1>*@
                             <h1 class="text-lg text-[#1B4332]">
                                 Date: <span>
                                     @Model.Comp.DOI
@@ -156,7 +157,7 @@
                                 {
                                     @Model.ifexplained.explain
                                 }
-                                </textarea>
+                                    </textarea>
                             <select name="copmlainttype" id="copmlainttype">
                                 <option value="Care">Patient Care</option>
                                 <option value="Admin">Administration</option>
@@ -175,8 +176,10 @@
                                 {
                                     @Model.ifexplained.explain
                                 }
-                                </textarea>
-                                <h1>Complaint Type : </h1>@Model.Comp.ComplaintType
+                                    </textarea>
+                            <h1>Complaint Type : </h1>
+
+                            @Model.Comp.ComplaintType
                             ;
                         }
 
@@ -187,16 +190,19 @@
 
                     <form asp-action="savecommandentcomment" asp-asp-controller="Admin" asp-route-id="@Model.Comp.id">
                         @{
-                            if (Model.Access != "ComplaintOfficer" && Model.ifcommented != null)
+                            if (Model.Access != "ComplaintOfficer")
                             {
-                                <!-- create horizontal divider-->
 
-                                <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
-
-                                <h1>Assistant Commandent Section</h1>
 
                                 if (Model.Access == "AssistantCommandent")
                                 {
+                                    <!-- create horizontal divider-->
+
+                                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
+
+                                    <h1>Assistant Commandent Section</h1>
+
+
                                     <textarea name="CommandentComment">@if (@Model.ifcommented != null)
                                         {
                                             @Model.ifcommented.comments
@@ -213,6 +219,9 @@
                                 }
                                 else
                                 {
+                                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
+
+                                    <h1>Assistant Commandent Section</h1>
                                     @if (@Model.ifcommented != null)
                                     {
                                         @Model.ifcommented.comments

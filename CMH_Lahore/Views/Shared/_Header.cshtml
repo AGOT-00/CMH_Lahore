@@ -8,4 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/Tailwind.js"></script>
     <link rel="stylesheet" href="/Custom.css">
+    <title>
+        @if (ViewData["Title"] != null)
+        {
+            @ViewData["Title"]
+        }
+        else
+        {
+            ViewData["Title"] = "CMH_LAHORE";
+            @ViewData["Title"];
+        }
+    </title>
 </head>

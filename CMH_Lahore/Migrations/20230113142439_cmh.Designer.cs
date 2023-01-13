@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CMHLahore.Migrations
 {
     [DbContext(typeof(Database))]
-    [Migration("20230111070145_CMH")]
-    partial class CMH
+    [Migration("20230113142439_cmh")]
+    partial class cmh
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,7 +46,10 @@ namespace CMHLahore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("role")
+                    b.Property<int>("department")
+                        .HasColumnType("int");
+
+                    b.Property<int>("rank")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -76,14 +79,13 @@ namespace CMHLahore.Migrations
                     b.Property<DateTime>("DOI")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DOR")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Department")
                         .HasColumnType("int");
 
                     b.Property<string>("DocName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoomNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CMHLahore.Migrations
 {
     /// <inheritdoc />
-    public partial class CMH : Migration
+    public partial class cmh : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace CMHLahore.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    role = table.Column<int>(type: "int", nullable: false),
+                    rank = table.Column<int>(type: "int", nullable: false),
+                    department = table.Column<int>(type: "int", nullable: false),
                     AdminType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -53,11 +54,11 @@ namespace CMHLahore.Migrations
                     phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DocName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Department = table.Column<int>(type: "int", nullable: false),
-                    RoomNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DOI = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ComplaintType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ComplaintDesc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    status = table.Column<int>(type: "int", nullable: false)
+                    status = table.Column<int>(type: "int", nullable: false),
+                    DOR = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

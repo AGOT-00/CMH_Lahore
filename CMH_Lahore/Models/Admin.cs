@@ -1,11 +1,12 @@
 ﻿using CMH_Lahore.DB;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Permissions;
 
 namespace CMH_Lahore.Models
 {
     public partial class Admin
     {
-        [Key]
+        [Key] 
         public string ID { get; set; }
 
         public string Name { get; set; }
@@ -15,9 +16,10 @@ namespace CMH_Lahore.Models
         public string Password { get; set; }
 
         public string Phone { get; set; }
-
-        public int role { get; set; }
-
+        
+        public int rank { get; set; }
+        
+        public int department { get; set; }
 
         //Admin | Care
         public string AdminType { get; set; } = "NA";
@@ -30,23 +32,23 @@ namespace CMH_Lahore.Models
             }
             return false;
         }
-        public Admin()
-        {
-
-        }
-        public Admin(string _id, string _name, string _password, string _phone, int _role, string _type)
+        
+        public Admin(){}
+        
+        public Admin(string _id, string _name, string _password, string _phone, int _department, string _type,int _rank)
         {
             this.ID = _id;
             this.Name = _name;
-            this.role = _role;
+            this.department = _department;
             this.Password = _password;
             this.Phone = _phone;
             this.AdminType = _type;
+            this.rank = _rank;
         }
 
         public string getadmintype()
         {
-            return role switch
+            return department switch
             {
                 0 => "Commandent",
                 1 => "DeputyCommandent",
@@ -71,7 +73,7 @@ namespace CMH_Lahore.Models
 
     public class ComplaintOfficer : Admin
     {
-        public ComplaintOfficer(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.role,Obj.AdminType)
+        public ComplaintOfficer(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.department,Obj.AdminType,Obj.rank=0)
         {
 
         }
@@ -92,7 +94,7 @@ namespace CMH_Lahore.Models
     {
         public string DepartmentType;
 
-        public AssistantCommandent(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.role,Obj.AdminType)
+        public AssistantCommandent(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.department,Obj.AdminType,Obj.rank)
         {
             DepartmentType = "Admin";
         }
@@ -110,7 +112,7 @@ namespace CMH_Lahore.Models
     
     public class DeputyCommandent : Admin
     {
-        public DeputyCommandent(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.role,Obj.AdminType) { }
+        public DeputyCommandent(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.department,Obj.AdminType,Obj.rank) { }
 
         public override Complaint? GetSingleComplaint(Database _DB, int cid)
         {
@@ -130,10 +132,8 @@ namespace CMH_Lahore.Models
         {
 
         }
-        public Commandent(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.role,Obj.AdminType)
-        {
-
-        }
+        public Commandent(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.department,Obj.AdminType,Obj.rank){}
+        
         public override Complaint? GetSingleComplaint(Database _DB, int cid)
         {
             return _DB.Complaints.Find(cid);
@@ -149,7 +149,7 @@ namespace CMH_Lahore.Models
     {
         public static Admin GetAdmin(Admin Obj)
         {
-            return Obj.role switch
+            return Obj.department switch
             {
                 4 => Obj,
                 3 => new ComplaintOfficer(Obj),
