@@ -7,13 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Home\GetStatus.cshtml" />
+    <Content Remove="Views\Home\RegisterComplaint.cshtml" />
     <Content Remove="Views\Home\submitcomplaint.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\Home\RegisterComplaint.cshtml" />
+    <None Include="Views\Shared\GetStatus.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\RegisterComplaint2.cshtml" />
     <None Include="Views\Home\submitcomplaint.cshtml" />
     <None Include="wwwroot\Custom.css" />
     <None Include="wwwroot\img\adminLogo.png" />

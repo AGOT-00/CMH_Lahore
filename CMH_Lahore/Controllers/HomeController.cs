@@ -32,25 +32,30 @@ namespace CMH_Lahore.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterComplaint(Complaint Obj)
+        [Route("Home/RegisterComplaint")]
+        public IActionResult submitcomplaint(Complaint Obj)
         {
             if (Obj != null)
             {
                 Obj.ComplaintType = "None";
-                var Check =  _DB.Complaints.Add(Obj);
+                var Check = _DB.Complaints.Add(Obj);
                 var maxceck = _DB.SaveChanges();
             }
             return View();
         }
 
-        public IActionResult submitcomplaint(int? complaintno)
+        [HttpGet]
+        public IActionResult GetStatus()
         {
             return View();
         }
 
-        public IActionResult GetStatus()
+        [Route("Home/GetStatus/")]
+        [HttpPost]
+        public IActionResult complaintDetails(int complaintNumber)
         {
-            return View();
+            var Comp = _DB.Complaints.Find(complaintNumber);
+            return View("complaintDetails",Comp);
         }
 
         public async Task<IActionResult> saveAsync(IFormFile audio_data)

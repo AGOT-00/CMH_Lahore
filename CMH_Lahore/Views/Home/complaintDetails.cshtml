@@ -1,0 +1,78 @@
+﻿@model Complaint
+@{
+    ViewData["Title"] = "Complaint Details";
+}
+
+<!DOCTYPE html>
+<html>
+
+<partial name="_Header"></partial>
+
+<body>
+    <div class="flex flex-col w-screen h-screen justify-center items-center">
+        <div class="flex flex-row justify-evenly items-center w-screen h-screen">
+            <div class="w-2/12">
+                <img src="\img\logo.png" />
+            </div>
+            <div>
+                <!-- cr eate a vertical divider here -->
+                <div class="border-r-2 border-[#2F6A50] h-80"></div>
+            </div>
+            <div class="flex flex-col w-6/12 h-11/12 items-start">
+                <div class="flex flex-row justify-start items-center w-full">
+                    <a asp-action="GetStatus">
+                        <button class="w-36 rounded-xl text-xl font-semibold text-[#1B4332] hover:cursor-pointer mb-5 text-left ml-2">
+                            <span><i class="fa-solid fa-angle-left"></i></span> Back
+                        </button>
+                    </a>
+
+                </div>
+                <div class="flex flex-col w-full h-full p-12 rectBox">
+                    <div class="flex flex-row justify-between">
+                        <div class="flex flex-col">
+                            <h1 class="text-lg font-semibold text-[#1B4332] mb-4">
+                                Status of Complaint:
+                                @if (Model != null)
+                                {
+                                    @Model.getstatus()
+                                    ;
+                                }
+                                else
+                                {
+                                    <span>
+                                        Complaint Not Found
+                                    </span>
+                                }
+
+                            </h1>
+                        </div>
+                    </div>
+                    @if(Model!=null){
+                    <!-- create horizontal divider-->
+                        <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
+                        <div class="flex flex-col mt-10">
+                            @{
+                                <span>Complaint Feedback Here</span>
+                                //COmplaint Feed Back Here
+                            }
+                            <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
+
+                            <h1 class="text-lg font-semibold text-[#1B4332] mb-4">
+                                Complaint:
+                            </h1>
+                            <h1 class="text-lg text-[#1B4332]">
+                                @{
+                                    //Complaint Data Here
+                                }
+                            </h1>
+
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

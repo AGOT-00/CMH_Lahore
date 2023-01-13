@@ -1,15 +1,7 @@
-
 <!doctype html>
 <html>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/Tailwind.js"></script>
-    <link rel="stylesheet" href="/Custom.css">
-    
-</head>
-
+<partial name="_Header"></partial>
 
 <body class="w-screen h-screen lg:flex lg:flex-row items-center justify-between md:hidden sm:hidden">
     <div class="lg:ml-28 basis-2/6">
@@ -23,14 +15,14 @@
     <div class="lg:mr-24 basis-3/6 rectBox p-6 relative">
         <!-- FORM -->
         <div class="flex flex-row w-full justify-around items-center relative -inset-y-14">
-            <div>
+            <div onclick="showComplaintForm()" class="cursor-pointer">
                 <!--create a bar -->
                 <div class="w-32 flex h-3 rounded-lg bg-[#2F6A50] bar-1"></div>
             </div>
-            <div>
+            <div onclick="_showDoctorForm()" class="cursor-pointer">
                 <div class="w-32 flex h-3 rounded-lg bg-[#D8F3DC] bar-2"></div>
             </div>
-            <div>
+            <div onclick="_showComplaintType()" class="cursor-pointer">
                 <div class="w-32 flex h-3 rounded-lg bg-[#D8F3DC] bar-3"></div>
             </div>
         </div>
@@ -54,28 +46,33 @@
             <label class="font-semibold text-xl text-[#2F6A50]">Record Complaint</label>
             <h1 class="font-semibold text-[#2F6A50]">شکایت ریکارڈ کریں</h1>
         </div>
-        <form class="flex flex-col w-full h-full rectBox" id="CMHComplaintForm" asp-action="RegisterComplaint" method="post">
+        <form class="flex flex-col w-full h-full rectBox" id="CMHComplaintForm" asp-action="RegisterComplaint"
+            method="post" onsubmit="if(validateComplaint()){}">
             <!-- Name of Complaintent -->
             <div class="ComplainentDiv">
                 <div class="flex flex-row items-center justify-between mt-8 text-[#2F6A50]">
                     <h1>Name of Complainent</h1>
                     <h1>شکایت کنندہ کا نام</h1>
                 </div>
-                <input type="text" class="w-full mt-2 p-3 rounded-lg" placeholder="Enter Name" name="cname" minlength="3" maxlength="30" required>
+                <input type="text" class="w-full mt-2 p-3 rounded-lg" placeholder="Enter Name" name="cname"
+                    minlength="3" maxlength="30" required>
                 <!-- Mobile Number -->
                 <div class="flex flex-row items-center justify-between mt-4 text-[#2F6A50]">
                     <h1>Mobile Number</h1>
                     <h1>موبائل نمبر</h1>
                 </div>
-                <input type="number" minlength="10" maxlength="15" required class="w-full mt-2 p-3 rounded-lg" placeholder="Enter Mobile Number" name="phone">
+                <input type="number" minlength="10" maxlength="15" required class="w-full mt-2 p-3 rounded-lg"
+                    placeholder="Enter Mobile Number" name="phone">
                 <!-- CNIC -->
                 <div class="flex flex-row items-center justify-between mt-4 text-[#2F6A50]">
                     <h1>CNIC</h1>
                     <h1>شناختی کارڈ نمبر</h1>
                 </div>
-                <input type="number" class="w-full mt-2 p-3 rounded-lg" placeholder="Enter CNIC" name="cnic" minlength="13" maxlength="15" required>
+                <input type="number" class="w-full mt-2 p-3 rounded-lg" placeholder="Enter CNIC" name="cnic"
+                    minlength="13" maxlength="15" required>
                 <!-- Continue Button -->
-                <button type="button" onclick="showDoctorForm()" class="w-full h-12 mt-5 bg-[#2F6A50] text-white font-semibold text-lg rounded-lg">Continue</button>
+                <button type="button" onclick="if(validateForm()){showDoctorForm()}"
+                    class="w-full firstBtn h-12 mt-5 bg-[#2F6A50] text-white font-semibold text-lg rounded-lg">Continue</button>
             </div>
             <div class="doctorDiv hidden">
                 <!-- Name of Doctor -->
@@ -83,13 +80,15 @@
                     <h1>Doctor/Staff Name</h1>
                     <h1>ڈاکٹر کا نام</h1>
                 </div>
-                <input type="text" class="w-full mt-2 p-3 rounded-lg" placeholder="Enter Name" name="DocName" minlength="3" maxlength="30" required>
+                <input type="text" class="w-full mt-2 p-3 rounded-lg" placeholder="Enter Name" name="DocName"
+                    minlength="3" maxlength="30" required>
                 <!--Choose Department-->
                 <div class="flex flex-row items-center justify-between mt-4 text-[#2F6A50]">
                     <h1>Choose Department</h1>
                     <h1>ڈپارٹمنٹ منتخب کریں</h1>
                 </div>
-                <select class="w-full mt-2 p-3 rounded-lg bg-white cursor-pointer" name="Department" required onchange="validateselectdepart()">
+                <select class="w-full mt-2 p-3 rounded-lg bg-white cursor-pointer" name="Department" required
+                    onchange="validateselectdepart()">
                     <option value="-1">Department</option>
                     <option value="1">Cardiology</option>
                     <option value="2">Neurology</option>
@@ -100,13 +99,16 @@
                     <h1>Complaint Date</h1>
                     <h1>شکایت کی تاریخ</h1>
                 </div>
-                <input type="datetime-local" class="w-full mt-2 p-3 rounded-lg cursor-pointer" name="DOI" onclick="validateselectdepart()">
-                <button type="button" onclick="showComplaintType()" class="w-full h-12 mt-5 bg-[#2F6A50] text-white font-semibold text-lg rounded-lg">Continue</button>
+                <input type="datetime-local" class="w-full mt-2 p-3 rounded-lg cursor-pointer" name="DOI"
+                    onclick="validateselectdepart()">
+                <button type="button" onclick="if(validateSecondForm()){showComplaintType()}"
+                    class="w-full h-12 mt-5 bg-[#2F6A50] text-white font-semibold text-lg rounded-lg">Continue</button>
             </div>
             <!-- Choose If you want to record complaint & or type -->
             <div class="flex flex-row items-center w-full hidden complaintDiv">
                 <!-- create button with icon-->
-                <div onclick="recordComplaint()" class="w-1/2 h-24 bg-[#2F6A50] cursor-pointer text-[#2F6A50] hover:bg-[#3D8766] font-semibold text-lg rounded-lg flex flex-row items-center justify-center">
+                <div onclick="recordComplaint()"
+                    class="w-1/2 h-24 bg-[#2F6A50] cursor-pointer text-[#2F6A50] hover:bg-[#3D8766] font-semibold text-lg rounded-lg flex flex-row items-center justify-center">
                     <img src="/img/mic.png" class="w-12 h-12 mr-4">
                     <div class="flex flex-col items-start">
                         <h1 class="text-[#D8F3DC]">Record Complaint</h1>
@@ -115,7 +117,8 @@
                 </div>
                 <!-- add space -->
                 <div class="w-6"></div>
-                <div onclick="typeComplaint()" class="w-1/2 h-24 bg-[#2F6A50] cursor-pointer text-[#2F6A50] hover:bg-[#3D8766] font-semibold text-lg rounded-lg flex flex-row items-center justify-center">
+                <div onclick="typeComplaint()"
+                    class="w-1/2 h-24 bg-[#2F6A50] cursor-pointer text-[#2F6A50] hover:bg-[#3D8766] font-semibold text-lg rounded-lg flex flex-row items-center justify-center">
                     <img src="/img/type.png" class="w-12 h-12 mr-4">
                     <div class="flex flex-col items-start">
                         <h1 class="text-[#D8F3DC]">Type Complaint</h1>
@@ -125,8 +128,10 @@
             </div>
             <!-- Type Complaint -->
             <div class="writtenComplaint hidden">
-                <textarea class="w-full h-36 mt-4 p-3 rounded-lg" placeholder="Type Complaint" name="ComplaintDesc"></textarea>
-                <button type="submit" class="w-full h-12 mt-5 bg-[#2F6A50] text-white font-semibold text-lg rounded-lg"  onsubmit="console.log('Submitted');">Submit</button>
+                <textarea minlength="20" class="w-full h-36 mt-4 p-3 rounded-lg" placeholder="Type Complaint"
+                    name="ComplaintDesc"></textarea>
+                <button type="submit" class="w-full h-12 mt-5 bg-[#2F6A50] text-white font-semibold text-lg rounded-lg"
+                    onsubmit="validateComplaint()">Submit!</button>
             </div>
             <!-- Voice Complaint -->
             <div class="voiceComplaint hidden">
@@ -135,39 +140,34 @@
                 <div class="display w-full font-semibold mt-2 text-center items-center">
                 </div>
 
-                @*<button class="w-full h-12 mt-5 bg-[#2F6A50] text-white font-semibold text-lg rounded-lg">Record</button>*@
+                @*<button
+                    class="w-full h-12 mt-5 bg-[#2F6A50] text-white font-semibold text-lg rounded-lg">Record</button>*@
             </div>
         </form>
-        
-
-
-
-        @*Copy*@
+        <!-- @*Copy*@ -->
         <div class="hidden voiceComplaint2" id="RecordingButtons">
-            <div class="controllers w-full text-center mt-4 text-xl p-2 bg-[#2F6A50] text-[#D8F3DC] font-semibold rounded-lg text-[#2F6A50] hover:cursor-pointer">
+            <div
+                class="controllers w-full text-center mt-4 text-xl p-2 bg-[#2F6A50] text-[#D8F3DC] font-semibold rounded-lg text-[#2F6A50] hover:cursor-pointer">
             </div>
 
 
             <button name="recsubmit" id="recsubmit"
-                    class="w-full text-xl p-5 bg-[#2F6A50] text-[#D8F3DC] font-semibold rounded-lg text-[#2F6A50] hover:cursor-pointer mt-4">
+                class="w-full text-xl p-5 bg-[#2F6A50] text-[#D8F3DC] font-semibold rounded-lg text-[#2F6A50] hover:cursor-pointer mt-4">
                 Submit Voice
             </button>
             <script src="/voice.js"></script>
 
         </div>
-            
-        @*Copy*@
-
+        <!-- @*Copy*@ -->
     </div>
     <script>
-
         function validateselectdepart() {
             var selection = document.getElementById('departname');
             if (selection.value == "-1") {
                 alert('Kindly Select the Department First.\n برائے مہربانی پہلے محکمہ کا انتخاب کریں۔\n');
             }
         }
-        
+
         function showDoctorForm() {
             document.getElementsByClassName("ComplainentDiv")[0].classList.add("hidden");
             document.getElementsByClassName("doctorDiv")[0].classList.remove("hidden");
@@ -199,19 +199,150 @@
             document.getElementsByClassName("heading-4")[0].classList.remove("hidden");
         }
 
-    
         function recordComplaint() {
             document.getElementsByClassName("complaintDiv")[0].classList.add("hidden");
             document.getElementsByClassName("voiceComplaint")[0].classList.remove("hidden");
             document.getElementsByClassName("voiceComplaint2")[0].classList.remove("hidden");
-
             // add hidden to heading-4 and remove hidden from heading-5
             document.getElementsByClassName("heading-3")[0].classList.add("hidden");
             document.getElementsByClassName("heading-5")[0].classList.remove("hidden");
-
         }
 
-        </script>
+        function validateForm(){
+            var name = document.getElementsByName("cname")[0].value;
+            var cnic = document.getElementsByName("cnic")[0].value;
+            var phone = document.getElementsByName("phone")[0].value;
+
+            if(name == "" || cnic == "" || phone == ""){
+                alert("Please fill all the fields");
+                return false;
+            }
+            else{
+                // check if name field has minimum 3 characters
+                if(name.length < 3){
+                    alert("Name must have minimum 3 characters");
+                    return false;
+                }
+                // check if mobile field has 11 characters
+                if(phone.length != 11){
+                    alert("Mobile number must have 11 characters");
+                    return false;
+                }
+                // check if cnic field has 13 characters
+                if(cnic.length != 13){
+                    alert("CNIC must have 13 characters");
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        function validateSecondForm(){
+            var docName = document.getElementsByName("DocName")[0].value;
+            var departname = document.getElementsByName("Department")[0].value;
+            var dateTime = document.getElementsByName("DOI")[0].value;
+
+            if(docName == "" || departname == "" || dateTime == ""){
+                alert("Please fill all the fields");
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+
+        function validateComplaint(){
+            var complaint = document.getElementsByName("ComplaintDesc")[0].value;
+
+            if(complaint == ""){
+                alert("Please fill all the fields");
+                return false;
+            }
+            else{
+                if(complaint.length < 10){
+                    alert("Complaint must have minimum 10 characters");
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        function showComplaintForm(){
+            // add hidden to all other div
+            document.getElementsByClassName("doctorDiv")[0].classList.add("hidden");
+            document.getElementsByClassName("complaintDiv")[0].classList.add("hidden");
+            document.getElementsByClassName("writtenComplaint")[0].classList.add("hidden");
+            document.getElementsByClassName("voiceComplaint")[0].classList.add("hidden");
+            document.getElementsByClassName("voiceComplaint2")[0].classList.add("hidden");
+            // remove hidden from first div
+            document.getElementsByClassName("ComplainentDiv")[0].classList.remove("hidden");
+            // add hidden to all other headings
+            document.getElementsByClassName("heading-2")[0].classList.add("hidden");
+            document.getElementsByClassName("heading-3")[0].classList.add("hidden");
+            document.getElementsByClassName("heading-4")[0].classList.add("hidden");
+            document.getElementsByClassName("heading-5")[0].classList.add("hidden");
+            // remove hidden from first heading
+            document.getElementsByClassName("heading-1")[0].classList.remove("hidden");
+            // change colour class of bar-2
+            document.getElementsByClassName("bar-2")[0].classList.remove("bg-[#2F6A50]");
+            document.getElementsByClassName("bar-2")[0].classList.add("bg-[#D8F3DC]");
+            // change colour class of bar-3
+            document.getElementsByClassName("bar-3")[0].classList.remove("bg-[#2F6A50]");
+            document.getElementsByClassName("bar-3")[0].classList.add("bg-[#D8F3DC]");
+        }
+
+        function _showDoctorForm(){
+            // add hidden to all other div
+            if(validateForm()){
+                document.getElementsByClassName("ComplainentDiv")[0].classList.add("hidden");
+                document.getElementsByClassName("complaintDiv")[0].classList.add("hidden");
+                document.getElementsByClassName("writtenComplaint")[0].classList.add("hidden");
+                document.getElementsByClassName("voiceComplaint")[0].classList.add("hidden");
+                document.getElementsByClassName("voiceComplaint2")[0].classList.add("hidden");
+                // remove hidden from first div
+                document.getElementsByClassName("doctorDiv")[0].classList.remove("hidden");
+                // add hidden to all other headings
+                document.getElementsByClassName("heading-1")[0].classList.add("hidden");
+                document.getElementsByClassName("heading-3")[0].classList.add("hidden");
+                document.getElementsByClassName("heading-4")[0].classList.add("hidden");
+                document.getElementsByClassName("heading-5")[0].classList.add("hidden");
+                // remove hidden from first heading
+                document.getElementsByClassName("heading-2")[0].classList.remove("hidden");
+                // change colour class of bar-2
+                document.getElementsByClassName("bar-2")[0].classList.remove("bg-[#D8F3DC]");
+                document.getElementsByClassName("bar-2")[0].classList.add("bg-[#2F6A50]");
+                // change colour class of bar-3
+                document.getElementsByClassName("bar-3")[0].classList.remove("bg-[#2F6A50]");
+                document.getElementsByClassName("bar-3")[0].classList.add("bg-[#D8F3DC]");
+            }
+        }
+
+        function _showComplaintType(){
+            if(validateSecondForm()){
+                // add hidden to all other div
+                document.getElementsByClassName("ComplainentDiv")[0].classList.add("hidden");
+                document.getElementsByClassName("doctorDiv")[0].classList.add("hidden");
+                document.getElementsByClassName("writtenComplaint")[0].classList.add("hidden");
+                document.getElementsByClassName("voiceComplaint")[0].classList.add("hidden");
+                document.getElementsByClassName("voiceComplaint2")[0].classList.add("hidden");
+                // remove hidden from first div
+                document.getElementsByClassName("complaintDiv")[0].classList.remove("hidden");
+                // add hidden to all other headings
+                document.getElementsByClassName("heading-1")[0].classList.add("hidden");
+                document.getElementsByClassName("heading-2")[0].classList.add("hidden");
+                document.getElementsByClassName("heading-4")[0].classList.add("hidden");
+                document.getElementsByClassName("heading-5")[0].classList.add("hidden");
+                // remove hidden from first heading
+                document.getElementsByClassName("heading-3")[0].classList.remove("hidden");
+                // change colour class of bar-2
+                document.getElementsByClassName("bar-2")[0].classList.remove("bg-[#D8F3DC");
+                document.getElementsByClassName("bar-2")[0].classList.add("bg-[#2F6A50]");
+                // change colour class of bar-3
+                document.getElementsByClassName("bar-3")[0].classList.remove("bg-[#D8F3DC]");
+                document.getElementsByClassName("bar-3")[0].classList.add("bg-[#2F6A50");
+            }
+        }
+    </script>
 </body>
 
 </html>
