@@ -181,7 +181,6 @@ namespace CMH_Lahore.Controllers
             return RedirectToAction("Login", "Admin");
         }
 
-
         [HttpGet]
         public IActionResult ComplaintDetail(int? ID)
         {

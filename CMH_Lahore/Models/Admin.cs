@@ -48,7 +48,7 @@ namespace CMH_Lahore.Models
 
         public string getadmintype()
         {
-            return department switch
+            return rank switch
             {
                 0 => "Commandent",
                 1 => "DeputyCommandent",
