@@ -149,7 +149,7 @@ namespace CMH_Lahore.Models
     {
         public static Admin GetAdmin(Admin Obj)
         {
-            return Obj.department switch
+            return Obj.rank switch
             {
                 4 => Obj,
                 3 => new ComplaintOfficer(Obj),

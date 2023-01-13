@@ -9,18 +9,19 @@ namespace CMH_Lahore.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly Database _DB;
+        private readonly int VoiceRedirectionSet;
 
         public HomeController(ILogger<HomeController> logger, Database DB)
         {
             _logger = logger;
             this._DB = DB;
         }
+        
         [HttpGet]
-
         public IActionResult Index()
         {
             //return RedirectToAction("InitialScreen", "Home");
-            //return RedirectToAction("Login", "Admin");
+            return RedirectToAction("Login", "Admin");
             return View();
         }
 
@@ -28,7 +29,7 @@ namespace CMH_Lahore.Controllers
         public IActionResult RegisterComplaint()
         {
             Complaint Obj = new();
-            return View(Obj);
+            return View("RegisterComplaint", Obj);
         }
 
         [HttpPost]
@@ -37,13 +38,26 @@ namespace CMH_Lahore.Controllers
         {
             if (Obj != null)
             {
-                Obj.ComplaintType = "None";
-                var Check = _DB.Complaints.Add(Obj);
-                var maxceck = _DB.SaveChanges();
-            }
+                try
+                {
+                    Obj.ComplaintType = "None";
+                    var Check = _DB.Complaints.Add(Obj);
+                    var maxceck = _DB.SaveChanges();
+                    return View(Obj.id);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }  
             return View();
         }
 
+        public IActionResult VoiceSubmissionComplete()
+        {
+            return View("submitcomplaint");
+        }
+        
         [HttpGet]
         public IActionResult GetStatus()
         {
@@ -57,6 +71,7 @@ namespace CMH_Lahore.Controllers
             var Comp = _DB.Complaints.Find(complaintNumber);
             return View("complaintDetails",Comp);
         }
+        
 
         public async Task<IActionResult> saveAsync(IFormFile audio_data)
         {

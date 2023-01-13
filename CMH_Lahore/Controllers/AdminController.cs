@@ -22,8 +22,6 @@ namespace CMH_Lahore.Controllers
         public IActionResult Login()
         {
             AdminDT obj = new();
-
-            //TEMP
             return View(obj);
         }
 
@@ -105,7 +103,7 @@ namespace CMH_Lahore.Controllers
         {
             if (SignedIn != null)
             {
-                Admin AdminAccount = _DB.Admins.Find(SignedIn.ID);
+                Admin? AdminAccount = _DB.Admins.Find(SignedIn.ID);
                 if (AdminAccount != null && AdminAccount.verifypassword(Obj.OldPassword))
                 {
                     if (Obj.NewPassword == Obj.ConfirmPassword)

@@ -8,17 +8,14 @@
 
   <ItemGroup>
     <Content Remove="Views\Home\GetStatus.cshtml" />
-    <Content Remove="Views\Home\RegisterComplaint.cshtml" />
-    <Content Remove="Views\Home\submitcomplaint.cshtml" />
+    <Content Remove="Views\Home\submitcomplaint2.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
-    <None Include="Views\Home\RegisterComplaint.cshtml" />
     <None Include="Views\Shared\GetStatus.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
-    <None Include="Views\Home\RegisterComplaint2.cshtml" />
-    <None Include="Views\Home\submitcomplaint.cshtml" />
+    <None Include="Views\Home\submitcomplaint2.cshtml" />
     <None Include="wwwroot\Custom.css" />
     <None Include="wwwroot\img\adminLogo.png" />
     <None Include="wwwroot\img\check.png" />
