@@ -61,19 +61,19 @@ namespace CMH_Lahore.Models
 
         public virtual Complaint? GetSingleComplaint(Database _DB, int cid)
         {
-            return _DB.Complaints.Find(cid);
+            return null;
         }
 
         public virtual IEnumerable<Complaint> GetListofComplaint(Database _DB)
         {
-            return _DB.Complaints.ToList();
+            return null;
         }
 
     }
 
     public class ComplaintOfficer : Admin
     {
-        public ComplaintOfficer(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.department,Obj.AdminType,Obj.rank=0)
+        public ComplaintOfficer(Admin Obj) : base(Obj.ID, Obj.Name, Obj.Password, Obj.Phone, Obj.department,Obj.AdminType,Obj.rank)
         {
 
         }

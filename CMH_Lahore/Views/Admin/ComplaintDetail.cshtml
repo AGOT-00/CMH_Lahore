@@ -1,248 +1,206 @@
 ﻿@model complaintdetaildt;
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
 @{
-    Layout = "";
+    ViewData["StatusListStyle"] = "text-md bg-[#BDEAC4] rounded-md";
 }
 <!DOCTYPE html>
 <html>
+
 <partial name="_Header"></partial>
-<body>
+
+<body class="hidden lg:flex md:hidden">
     <div class="flex flex-row w-screen h-screen">
-
         <partial name="AdminPanel"></partial>
-
-        <div class="flex flex-col w-full h-full items-start px-32 py-12">
-            <div class="flex flex-row justify-start items-center w-full">
-                <button class="w-36 rounded-xl text-xl font-semibold text-[#1B4332] hover:cursor-pointer mb-5 text-left ml-2">
-                    <span><i class="fa-solid fa-angle-left"></i></span>
-                    Back
-                </button>
-            </div>
-            <div class="flex flex-col w-full h-full p-12 rectBox">
-
-                <form method="post" asp-action="ComplaintDetail" asp-controller="Admin">
-
-
-                    <!--Party Information-->
-
-                    <div class="flex flex-row justify-between">
+        <div class="w-full h-full">
+            <div class="flex flex-col w-full h-full items-start p-12 mt-6">
+                <!-- Back Button -->
+                <div class="flex flex-row w-full mb-4 ml-1">
+                    <button class="flex flex-row items-center gap-x-2 text-[#1B4332] hover:cursor-pointer">
+                        <i class="fas fa-arrow-left"></i>
+                        <h1 class="text-xl font-semibold">Back</h1>
+                    </button>
+                </div>
+                <div class="rectBox w-full p-5 text-[#1B4332]">
+                    <!-- Complaintent Details -->
+                    <div class="flex flex-row w-full justify-between">
                         <div class="flex flex-col">
-                            <h1 class="text-lg font-semibold text-[#1B4332] mb-4">
-                                Complaintent Details:
-                            </h1>
-                            <h1 class="text-lg text-[#1B4332]">
-                                Name: <span>
-                                    @Model.Comp.cname
-                                </span>
-                            </h1>
-                            <h1 class="text-lg text-[#1B4332]">
-                                Phone Number:
-                                <span>
-                                    @Model.Comp.phone
-                                </span>
-                            </h1>
-                            <h1 class="text-lg text-[#1B4332]">
-                                Date: <span>
-                                    @Model.Comp.DOC
-                                </span>
-                            </h1>
-                            <h1 class="text-lg text-[#1B4332]">
-                                CNIC:
-                                <span>
-                                    @Model.Comp.cnic
-                                </span>
-                            </h1>
+                            <h1 class="text-lg font-semibold text-[#1B4332]">Complaintent Details</h1>
+                            <div class="flex flex-row w-full gap-x-2 text-[#1B4332] mt-2">
+                                <h1 class="text-md">Name: </h1>
+                                <h1 class="text-md">@Model.Comp.cname</h1>
+                            </div>
+                            <div class="flex flex-row w-full gap-x-2">
+                                <h1 class="text-md">Phone Number: </h1>
+                                <h1 class="text-md">@Model.Comp.phone</h1>
+                            </div>
+                            <div class="flex flex-row w-full gap-x-2">
+                                <h1 class="text-md">CNIC: </h1>
+                                <h1 class="text-md">@Model.Comp.cnic</h1>
+                            </div>
                         </div>
+
+                        <!-- Complaint Against Details -->
                         <div class="flex flex-col">
-                            <h1 class="text-lg font-semibold text-[#1B4332] mb-4">
-                                Complaintent Against:
-                            </h1>
-                            <h1 class="text-lg text-[#1B4332]">
-                                Name: <span>
-                                    @Model.Comp.DocName
-                                </span>
-                            </h1>
-                            <h1 class="text-lg text-[#1B4332]">
-                                Department Name:
-                                @if (Model.Access == "ComplaintOfficer")
-                                {
-                                    <select name="DepartmentSelection" id="DepartmentSelection" value="2">
-                                        @{
-                                            foreach (var item in Model.DepartmentList)
-                                            {
-                                                if (item.id == Model.Comp.Department)
+                            <h1 class="text-lg font-semibold text-[#1B4332]">Complaint Against</h1>
+                            <div class="flex flex-row w-full gap-x-2 mt-2">
+                                <h1 class="text-md">Name: </h1>
+                                <h1 class="text-md">@Model.Comp.DocName</h1>
+                            </div>
+                            <div class="flex flex-row w-full gap-x-2">
+                                <h1 class="text-md">Department: </h1>
+                                <h1 class="text-md">
+                                    @if (Model.Access == "ComplaintOfficer")
+                                    {
+                                        <select name="DepartmentSelection" id="DepartmentSelection" value="2" class="@ViewData["StatusListStyle"]">
+                                            @{
+                                                foreach (var item in Model.DepartmentList)
                                                 {
-                                                    <option value="@item.id" selected>@item.Departmentname</option>
+                                                    if (item.id == Model.Comp.Department)
+                                                    {
+                                                        <option value="@item.id" selected>@item.Departmentname</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@item.id">@item.Departmentname</option>
+
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            @{
+                                                var Depart = Model.DepartmentList.FirstOrDefault(d => d.id == Model.Comp.Department);
+                                                if (Depart != null)
+                                                {
+                                                    @Depart.Departmentname
                                                 }
                                                 else
                                                 {
-                                                    <option value="@item.id">@item.Departmentname</option>
-
+                                                    <h>Error</h>
                                                 }
                                             }
-                                        }
-                                    </select>
-                                }
-                                else
-                                {
-                                    <span>
-                                        @{
-                                            var Depart = Model.DepartmentList.FirstOrDefault(d => d.id == Model.Comp.Department);
-                                            if (Depart != null)
-                                            {
-                                                @Depart.Departmentname
-                                            }
-                                            else
-                                            {
-                                                <h>Error</h>
-                                            }
-                                        }
-                                    </span>
-                                }
-
-                            </h1>
-                            @*<h1 class="text-lg text-[#1B4332]">
-                                Room Number: <span>
-                                    @Model.Comp.RoomNo
-                                </span>
-                            </h1>*@
-                            <h1 class="text-lg text-[#1B4332]">
-                                Date: <span>
-                                    @Model.Comp.DOI
-                                </span>
-                            </h1>
-                        </div>
-                    </div>
-
-                    <!--Complaint Status-->
-
-                    <div class="flex flex-row justify-between  bg-red-200">
-
-                        <div class="flex flex-col gap-2 bg-red-200 text-lg text-[#1B4332]">
-                            Status : <partial name="_StatusList"></partial>
-
-                        </div>
-                    </div>
-
-                    <!-- create horizontal divider-->
-                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
-
-                    <!--Complaint Data-->
-
-                    <div class="flex flex-col mt-10">
-                        <h1 class="text-lg font-semibold text-[#1B4332] mb-4">
-                            Complaint:
-                        </h1>
-                        <h1 class="text-lg text-[#1B4332]">
-                            <span>
-                                @Model.Comp.ComplaintDesc
-                            </span>
-                        </h1>
-                    </div>
-
-                    <!-- create horizontal divider-->
-                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
-
-                    <!--Complaint Officer-->
-                    <div>
-                        Complaint OFficer Section
-                        @if (Model.Access == "ComplaintOfficer")
-                        {
-                            <textarea name="Explain">
-                                @if (@Model.ifexplained != null)
-                                {
-                                    @Model.ifexplained.explain
-                                }
-                                    </textarea>
-                            <select name="copmlainttype" id="copmlainttype">
-                                <option value="Care">Patient Care</option>
-                                <option value="Admin">Administration</option>
-                            </select>
-                            <div class="flex flex-col gap-2 bg-red-200 text-lg text-[#1B4332]">
-                                <button type="submit"
-                                    class="bg-[#2F6A50] text-[#D8F3DC] hover:bg-[#1B4332] hover:cursor-pointer px-5 py-3 rounded-xl">
-                                    Save Editing
-                                </button>
+                                        </span>
+                                    }
+                                </h1>
                             </div>
-                        }
-                        else
-                        {
-                            <textarea name="Explain" disabled>
-                                @if (@Model.ifexplained != null)
-                                {
-                                    @Model.ifexplained.explain
-                                }
-                                    </textarea>
-                            <h1>Complaint Type : </h1>
+                            <div class="flex flex-row w-full gap-x-2">
+                                <h1 class="text-md">Issue Date: </h1>
+                                <h1 class="text-md">@Model.Comp.DOI</h1>
+                            </div>
+                        </div>
 
-                            @Model.Comp.ComplaintType
+                        <!-- Complaint Status -->
+                        <div class="flex flex-col">
+                            <h1 class="text-lg font-semibold text-[#1B4332]">Complaint Details</h1>
+                            <div class="flex flex-row w-full gap-x-2 items-center mt-2">
+                                <h1 class="text-md">Status: </h1>
+
+                                <partial name="_StatusList"></partial>
+                            </div>
+                            <div class="flex flex-row w-full gap-x-2 items-center mt-2">
+                                <h1 class="text-md">Complaint Type: </h1>
+                                <select name="" class="@ViewData["StatusListStyle"]">
+                                    <option id="None">None</option>
+                                    <option id="Admin">Admin</option>
+                                    <option id="Care">Care</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- create a horizontal divider-->
+                    <div class="border-b-2 border-[#2F6A50] w-full mt-5"></div>
+                    <div class="flex flex-row items-center justify-between mt-2 bg-[#BDEAC4] p-1 rounded-lg">
+                        <button onclick="showComplaint()" class="text-xl py-2 bg-[#2F6A50] complaintBtn text-[#D8F3DC] w-full rounded-md">Complaint</button>
+                        <button onclick="showCoSection()" class="rounded-md coBtn py-2 text-xl w-full">CO Section</button>
+                        <button onclick="showFeedback()" class="feedbackBtn rounded-md py-2 text-xl w-full">Feedback</button>
+
+                    </div>
+                    <!-- Complaint -->
+                    <section class="Complaint mt-4 text-lg">
+                        @Model.Comp.ComplaintDesc
+                    </section>
+                    <section class="CoSection mt-4 text-lg hidden">
+
+                        @if (@Model.ifexplained != null)
+                        {
+                            @Model.ifexplained.explain
                             ;
                         }
-
+                    </section>
+                    <!-- Feedback Section -->
+                    <div class="Feedback mt-4 text-lg hidden">
+                        <div class="flex flex-col justify-between w-full h-full">
+                            <div>
+                                <div class="flex flex-row w-full gap-x-2">
+                                    <h1 class="font-semibold">Commandent: </h1>
+                                    <h1>Please Expedite this complaint</h1>
+                                </div>
+                                <div class="flex flex-row w-full gap-x-2">
+                                    <h1 class="font-semibold">Commandent2: </h1>
+                                    <h1>Send latest report on this !</h1>
+                                </div>
+                            </div>
+                            <!-- input field for feedback-->
+                            <div class="flex flex-col mt-24">
+                                <textarea placeholder="Write a feedback" name="feedback" id="feedback" cols="30" rows="1" class="w-full border-2 border-[#2F6A50] rounded-md p-2"></textarea>
+                                <button class="text-lg py-2 bg-[#2F6A50] text-[#D8F3DC] w-full rounded-mx sssssssssssad mt-2">Send</button>
+                            </div>
+                        </div>
                     </div>
-
-                </form>
-                <div>
-
-                    <form asp-action="savecommandentcomment" asp-asp-controller="Admin" asp-route-id="@Model.Comp.id">
-                        @{
-                            if (Model.Access != "ComplaintOfficer")
-                            {
-
-
-                                if (Model.Access == "AssistantCommandent")
-                                {
-                                    <!-- create horizontal divider-->
-
-                                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
-
-                                    <h1>Assistant Commandent Section</h1>
-
-
-                                    <textarea name="CommandentComment">@if (@Model.ifcommented != null)
-                                        {
-                                            @Model.ifcommented.comments
-                                            ;
-                                        }</textarea>
-                                    <div class="flex flex-col gap-2 bg-red-200 text-lg text-[#1B4332]">
-
-                                        <button type="submit"
-                                        class="bg-[#2F6A50] text-[#D8F3DC] hover:bg-[#1B4332] hover:cursor-pointer px-5 py-3 rounded-xl">
-                                            Save Comment
-                                        </button>
-
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
-
-                                    <h1>Assistant Commandent Section</h1>
-                                    @if (@Model.ifcommented != null)
-                                    {
-                                        @Model.ifcommented.comments
-                                        ;
-                                    }
-                                }
-                            }
-                        }
-                    </form>
                 </div>
             </div>
         </div>
-        <script>
-            document.querySelector('#CurrentComplaintStatus').value = @Model.Comp.status;
-        </script>
-
-        @if (Model.Comp.ComplaintType != null)
-        {
-            <script>
-                document.querySelector("#copmlainttype").value = "@Model.Comp.ComplaintType"</script>
+    </div>
+    <script>
+        function showComplaint() {
+            document.getElementsByClassName("complaintBtn")[0].classList.add("activeBtn");
+            document.getElementsByClassName("complaintBtn")[0].classList.add("bg-[#2F6A50]");
+            document.getElementsByClassName("complaintBtn")[0].classList.add("text-[#D8F3DC]");
+            document.getElementsByClassName("coBtn")[0].classList.remove("activeBtn");
+            document.getElementsByClassName("coBtn")[0].classList.remove("bg-[#2F6A50]");
+            document.getElementsByClassName("coBtn")[0].classList.remove("text-[#D8F3DC]");
+            document.getElementsByClassName("feedbackBtn")[0].classList.remove("activeBtn");
+            document.getElementsByClassName("feedbackBtn")[0].classList.remove("bg-[#2F6A50]");
+            document.getElementsByClassName("feedbackBtn")[0].classList.remove("text-[#D8F3DC]");
+            document.getElementsByClassName("Complaint")[0].classList.remove("hidden");
+            document.getElementsByClassName("CoSection")[0].classList.add("hidden");
+            document.getElementsByClassName("Feedback")[0].classList.add("hidden");
+        }
+        function showCoSection() {
+            document.getElementsByClassName("complaintBtn")[0].classList.remove("activeBtn");
+            document.getElementsByClassName("complaintBtn")[0].classList.remove("bg-[#2F6A50]");
+            document.getElementsByClassName("complaintBtn")[0].classList.remove("text-[#D8F3DC]");
+            document.getElementsByClassName("coBtn")[0].classList.add("activeBtn");
+            document.getElementsByClassName("coBtn")[0].classList.add("bg-[#2F6A50]");
+            document.getElementsByClassName("coBtn")[0].classList.add("text-[#D8F3DC]");
+            document.getElementsByClassName("feedbackBtn")[0].classList.remove("activeBtn");
+            document.getElementsByClassName("feedbackBtn")[0].classList.remove("bg-[#2F6A50]");
+            document.getElementsByClassName("feedbackBtn")[0].classList.remove("text-[#D8F3DC]");
+            document.getElementsByClassName("Complaint")[0].classList.add("hidden");
+            document.getElementsByClassName("CoSection")[0].classList.remove("hidden");
+            document.getElementsByClassName("Feedback")[0].classList.add("hidden");
         }
 
+        function showFeedback() {
+            document.getElementsByClassName("complaintBtn")[0].classList.remove("activeBtn");
+            document.getElementsByClassName("complaintBtn")[0].classList.remove("bg-[#2F6A50]");
+            document.getElementsByClassName("complaintBtn")[0].classList.remove("text-[#D8F3DC]");
+            document.getElementsByClassName("coBtn")[0].classList.remove("activeBtn");
+            document.getElementsByClassName("coBtn")[0].classList.remove("bg-[#2F6A50]");
+            document.getElementsByClassName("coBtn")[0].classList.remove("text-[#D8F3DC]");
+            document.getElementsByClassName("feedbackBtn")[0].classList.add("activeBtn");
+            document.getElementsByClassName("feedbackBtn")[0].classList.add("bg-[#2F6A50]");
+            document.getElementsByClassName("feedbackBtn")[0].classList.add("text-[#D8F3DC]");
+            document.getElementsByClassName("Complaint")[0].classList.add("hidden");
+            document.getElementsByClassName("CoSection")[0].classList.add("hidden");
+            document.getElementsByClassName("Feedback")[0].classList.remove("hidden");
+        }
+    </script>
 </body>
+
 </html>

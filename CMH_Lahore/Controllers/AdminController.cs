@@ -1,6 +1,8 @@
 ﻿using CMH_Lahore.DB;
 using CMH_Lahore.Models;
 using Microsoft.AspNetCore.Mvc;
+//Login Issue
+
 
 namespace CMH_Lahore.Controllers
 {
@@ -191,6 +193,7 @@ namespace CMH_Lahore.Controllers
                 {
                     IEnumerable<Department> ComplaintList = _DB.Departments.ToList();
                     complaintdetaildt Obj = new(DbObj, ComplaintList, SignedIn.getadmintype(), _DB.Explainations.Find(ID), _DB.comments.Find(ID));
+                    
                     return View(Obj);
                 }
             }

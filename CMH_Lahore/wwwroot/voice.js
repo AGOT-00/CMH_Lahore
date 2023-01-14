@@ -127,6 +127,9 @@ function uploadtophp() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
+            if (data==1) {
+                window.location.replace("home/");
+            }
         })
         .catch(error => {
             console.log(error);

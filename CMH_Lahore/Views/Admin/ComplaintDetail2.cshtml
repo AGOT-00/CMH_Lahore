@@ -1,0 +1,248 @@
+﻿@model complaintdetaildt;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    Layout = "";
+}
+<!DOCTYPE html>
+<html>
+<partial name="_Header"></partial>
+<body>
+    <div class="flex flex-row w-screen h-screen">
+
+        <partial name="AdminPanel"></partial>
+
+        <div class="flex flex-col w-full h-full items-start px-32 py-12">
+            <div class="flex flex-row justify-start items-center w-full">
+                <button class="w-36 rounded-xl text-xl font-semibold text-[#1B4332] hover:cursor-pointer mb-5 text-left ml-2">
+                    <span><i class="fa-solid fa-angle-left"></i></span>
+                    Back
+                </button>
+            </div>
+            <div class="flex flex-col w-full h-full p-12 rectBox">
+
+                <form method="post" asp-action="ComplaintDetail" asp-controller="Admin">
+
+
+                    <!--Party Information-->
+
+                    <div class="flex flex-row justify-between">
+                        <div class="flex flex-col">
+                            <h1 class="text-lg font-semibold text-[#1B4332] mb-4">
+                                Complaintent Details:
+                            </h1>
+                            <h1 class="text-lg text-[#1B4332]">
+                                Name: <span>
+                                    @Model.Comp.cname
+                                </span>
+                            </h1>
+                            <h1 class="text-lg text-[#1B4332]">
+                                Phone Number:
+                                <span>
+                                    @Model.Comp.phone
+                                </span>
+                            </h1>
+                            <h1 class="text-lg text-[#1B4332]">
+                                Date: <span>
+                                    @Model.Comp.DOC
+                                </span>
+                            </h1>
+                            <h1 class="text-lg text-[#1B4332]">
+                                CNIC:
+                                <span>
+                                    @Model.Comp.cnic
+                                </span>
+                            </h1>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-lg font-semibold text-[#1B4332] mb-4">
+                                Complaintent Against:
+                            </h1>
+                            <h1 class="text-lg text-[#1B4332]">
+                                Name: <span>
+                                    @Model.Comp.DocName
+                                </span>
+                            </h1>
+                            <h1 class="text-lg text-[#1B4332]">
+                                Department Name:
+                                @if (Model.Access == "ComplaintOfficer")
+                                {
+                                    <select name="DepartmentSelection" id="DepartmentSelection" value="2">
+                                        @{
+                                            foreach (var item in Model.DepartmentList)
+                                            {
+                                                if (item.id == Model.Comp.Department)
+                                                {
+                                                    <option value="@item.id" selected>@item.Departmentname</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.id">@item.Departmentname</option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    <span>
+                                        @{
+                                            var Depart = Model.DepartmentList.FirstOrDefault(d => d.id == Model.Comp.Department);
+                                            if (Depart != null)
+                                            {
+                                                @Depart.Departmentname
+                                            }
+                                            else
+                                            {
+                                                <h>Error</h>
+                                            }
+                                        }
+                                    </span>
+                                }
+
+                            </h1>
+                            @*<h1 class="text-lg text-[#1B4332]">
+                                Room Number: <span>
+                                    @Model.Comp.RoomNo
+                                </span>
+                            </h1>*@
+                            <h1 class="text-lg text-[#1B4332]">
+                                Date: <span>
+                                    @Model.Comp.DOI
+                                </span>
+                            </h1>
+                        </div>
+                    </div>
+
+                    <!--Complaint Status-->
+
+                    <div class="flex flex-row justify-between  bg-red-200">
+
+                        <div class="flex flex-col gap-2 bg-red-200 text-lg text-[#1B4332]">
+                            Status : <partial name="_StatusList"></partial>
+
+                        </div>
+                    </div>
+
+                    <!-- create horizontal divider-->
+                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
+
+                    <!--Complaint Data-->
+
+                    <div class="flex flex-col mt-10">
+                        <h1 class="text-lg font-semibold text-[#1B4332] mb-4">
+                            Complaint:
+                        </h1>
+                        <h1 class="text-lg text-[#1B4332]">
+                            <span>
+                                @Model.Comp.ComplaintDesc
+                            </span>
+                        </h1>
+                    </div>
+
+                    <!-- create horizontal divider-->
+                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
+
+                    <!--Complaint Officer-->
+                    <div>
+                        Complaint OFficer Section
+                        @if (Model.Access == "ComplaintOfficer")
+                        {
+                            <textarea name="Explain">
+                                @if (@Model.ifexplained != null)
+                                {
+                                    @Model.ifexplained.explain
+                                }
+                                    </textarea>
+                            <select name="copmlainttype" id="copmlainttype">
+                                <option value="Care">Patient Care</option>
+                                <option value="Admin">Administration</option>
+                            </select>
+                            <div class="flex flex-col gap-2 bg-red-200 text-lg text-[#1B4332]">
+                                <button type="submit"
+                                    class="bg-[#2F6A50] text-[#D8F3DC] hover:bg-[#1B4332] hover:cursor-pointer px-5 py-3 rounded-xl">
+                                    Save Editing
+                                </button>
+                            </div>
+                        }
+                        else
+                        {
+                            <textarea name="Explain" disabled>
+                                @if (@Model.ifexplained != null)
+                                {
+                                    @Model.ifexplained.explain
+                                }
+                                    </textarea>
+                            <h1>Complaint Type : </h1>
+
+                            @Model.Comp.ComplaintType
+                            ;
+                        }
+
+                    </div>
+
+                </form>
+                <div>
+
+                    <form asp-action="savecommandentcomment" asp-asp-controller="Admin" asp-route-id="@Model.Comp.id">
+                        @{
+                            if (Model.Access != "ComplaintOfficer")
+                            {
+
+
+                                if (Model.Access == "AssistantCommandent")
+                                {
+                                    <!-- create horizontal divider-->
+
+                                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
+
+                                    <h1>Assistant Commandent Section</h1>
+
+
+                                    <textarea name="CommandentComment">@if (@Model.ifcommented != null)
+                                        {
+                                            @Model.ifcommented.comments
+                                            ;
+                                        }</textarea>
+                                    <div class="flex flex-col gap-2 bg-red-200 text-lg text-[#1B4332]">
+
+                                        <button type="submit"
+                                        class="bg-[#2F6A50] text-[#D8F3DC] hover:bg-[#1B4332] hover:cursor-pointer px-5 py-3 rounded-xl">
+                                            Save Comment
+                                        </button>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="border-b-2 border-[#2F6A50] w-full mt-10"></div>
+
+                                    <h1>Assistant Commandent Section</h1>
+                                    @if (@Model.ifcommented != null)
+                                    {
+                                        @Model.ifcommented.comments
+                                        ;
+                                    }
+                                }
+                            }
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.querySelector('#CurrentComplaintStatus').value = @Model.Comp.status;
+        </script>
+
+        @if (Model.Comp.ComplaintType != null)
+        {
+            <script>
+                document.querySelector("#copmlainttype").value = "@Model.Comp.ComplaintType"</script>
+        }
+
+</body>
+</html>
