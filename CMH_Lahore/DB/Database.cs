@@ -19,6 +19,6 @@ namespace CMH_Lahore.DB
         public DbSet<explaination> Explainations { get; set; }
 
         public DbSet<comment> comments { get; set; }
-        
+
     }
 }

@@ -9,7 +9,6 @@ namespace CMH_Lahore.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly Database _DB;
-        private int VoiceRedirectionSet;
 
         public HomeController(ILogger<HomeController> logger, Database DB)
         {
@@ -21,7 +20,7 @@ namespace CMH_Lahore.Controllers
         public IActionResult Index()
         {
             //return RedirectToAction("InitialScreen", "Home");
-            return RedirectToAction("Login", "Admin");
+            //return RedirectToAction("Login", "Admin");
             return View();
         }
 
@@ -55,13 +54,15 @@ namespace CMH_Lahore.Controllers
 
         public IActionResult VoiceSubmissionComplete()
         {
-            if (VoiceRedirectionSet != 0)
-            {
-                int VoiceBasedSubmissionID = VoiceRedirectionSet;
-                VoiceRedirectionSet = 0;
-                return View("submitcomplaint", VoiceBasedSubmissionID);
-            }
-            return NotFound();
+            //if (VoiceRedirectionSet != 0)
+            //{
+            //    int VoiceBasedSubmissionID = VoiceRedirectionSet;
+            //    VoiceRedirectionSet = 0;
+            //    return View("submitcomplaint", VoiceBasedSubmissionID);
+            //}
+
+            var status = HttpContext.Session.GetInt32("VoiceIDLatest");
+            return View("submitcomplaint");
         }
 
         [HttpGet]
@@ -83,26 +84,29 @@ namespace CMH_Lahore.Controllers
             return View();
         }
 
-        public async Task saveAsync(IFormFile audio_data,int Cid)
+        public async Task saveAsync(IFormFile audio_data, int Cid)
         {
             var currentDir = Directory.GetCurrentDirectory();
 
             // Construct the full path to where the file should be saved
-            var filePath = Path.Combine(currentDir, "audio", Cid.ToString());
+            var filePath = Path.Combine(currentDir, "audio", Cid.ToString() + ".mp4");
             //Console.WriteLine(filePath);
             // Open a stream to write the file
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 // Copy the contents of the file to the stream
                 await audio_data.CopyToAsync(fileStream);
-                VoiceRedirectionSet = Cid;
+
+
+                //VoiceRedirectionSet = Cid;
             }
         }
 
         public async Task<bool> SubmitVoicedataAsync(Complaint Obj, IFormFile audio_data)
         {
-            //using StreamWriter file = new("List.txt", append: true);
-            //await file.WriteLineAsync(Obj.DocName+" IS ");
+            using StreamWriter file = new("List.txt", append: true);
+            await file.WriteLineAsync(Obj.DocName + " IS ");
+
             if (audio_data != null)
             {
                 if (Obj != null)
@@ -110,21 +114,27 @@ namespace CMH_Lahore.Controllers
                     try
                     {
                         Obj.ComplaintType = "None";
+                        Obj.ComplaintDesc = "VoiceData";
                         _DB.Complaints.Add(Obj);
                         _DB.SaveChanges();
-                        saveAsync(audio_data,Obj.id);
+
+                        await file.WriteLineAsync(Obj.id.ToString());
+
+                        saveAsync(audio_data, Obj.id);
+
+                        HttpContext.Session.SetInt32("VoiceIDLatest", Obj.id);
+
+                        return true;
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine(e);
+                        await file.WriteLineAsync(e.Message);
+                        await file.WriteLineAsync(e.ToString());
                     }
                 }
             }
-            else
-            {
-                return false;
-            }
-            return true;
+            return false;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -6,6 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
+
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(4);//At Max Login is 4 Hours
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var services = builder.Services;
 
 //DI FOR DB ACCESS
@@ -26,7 +36,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();//New Panga
 
 app.MapControllerRoute(
     name: "default",

@@ -1,7 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-
-namespace CMH_Lahore.Models
+﻿namespace CMH_Lahore.Models
 {
     public class passwordchanger
     {
@@ -16,8 +13,9 @@ namespace CMH_Lahore.Models
         }
     }
 
-    public class commentuser {
-        
+    public class commentuser
+    {
+
     }
 
 
@@ -34,7 +32,7 @@ namespace CMH_Lahore.Models
 
         }
 
-        public complaintdetaildt(Complaint _Comp, IEnumerable<Department> _DepartmentList, string _Access, explaination _Ex = null,comment _Comnt=null)
+        public complaintdetaildt(Complaint _Comp, IEnumerable<Department> _DepartmentList, string _Access, explaination _Ex = null, comment _Comnt = null)
         {
             this.Comp = _Comp;
             this.DepartmentList = _DepartmentList;
@@ -46,8 +44,8 @@ namespace CMH_Lahore.Models
     public class AdminDT
     {
         public string ID { get; set; }
-        
+
         public string Password { get; set; }
-        
+
     }
 }

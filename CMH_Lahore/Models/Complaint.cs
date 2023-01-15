@@ -12,7 +12,7 @@ namespace CMH_Lahore.Models
         [Required]
         public string cname { get; set; }
         public string cnic { get; set; }
-        
+
         public DateTime DOC { get; set; } = DateTime.Now;
 
         [Required]
@@ -22,11 +22,11 @@ namespace CMH_Lahore.Models
         [Required]
         public string DocName
         { get; set; }
-        
+
         [Required]
         public int Department
         { get; set; }
-        
+
         [Required]
         public DateTime DOI { get; set; }
 
@@ -42,7 +42,7 @@ namespace CMH_Lahore.Models
 
         [AllowNull]
         public DateTime DOR { get; set; }
-        
+
         public string getstatus()
         {
             return status switch
@@ -68,20 +68,21 @@ namespace CMH_Lahore.Models
 
     }
 
-    public class comment {
+    public class comment
+    {
         [ForeignKey("Complaint")]
         public int id { get; set; }
-        public string commentername { get; set; }
+        public string commenterid { get; set; }
         public string comments { get; set; }
 
         public comment()
         {
-            
+
         }
-        public comment(int _id, string _commentername, string comments)
+        public comment(int _id, string _commenterid, string comments)
         {
             this.id = _id;
-            this.commentername = _commentername;
+            this.commenterid = _commenterid;
             this.comments = comments;
         }
     }
