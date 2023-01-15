@@ -1,134 +1,27 @@
 ﻿using CMH_Lahore.DB;
 using CMH_Lahore.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-//Login Issue
+using System.Security.Claims;
+//Login UI RE
 //Feedback Upload Status
+//Add Department UI
+
 
 namespace CMH_Lahore.Controllers
 {
-    //Create a Complete SignINManager to Handle SignInASYNC and SignOutASYNC
-    //public class AdminController : Controller
-    //{
-    //    private readonly Database _db;
-    //    public AdminController(Database db)
-    //    {
-    //        _db = db;
-    //    }
-    //    public IActionResult Index()
-    //    {
-    //        return View();
-    //    }
-    //    public IActionResult Login()
-    //    {
-    //        return View();
-    //    }
-    //    [HttpPost]
-    //    public IActionResult Login(Admin admin)
-    //    {
-    //        var admindata = _db.Admins.Find(admin.ID);
-    //        if (admindata != null)
-    //        {
-    //            if (admindata.verifypassword(admin.Password))
-    //            {
-    //                //Create a Claim
-    //                var claims = new[]
-    //                {
-    //                    new Claim(ClaimTypes.Name,admindata.Name),
-    //                    new Claim(ClaimTypes.Role,admindata.getadmintype()),
-    //                    new Claim(ClaimTypes.NameIdentifier,admindata.ID),
-    //                    new Claim(ClaimTypes.MobilePhone,admindata.Phone),
-    //                    new Claim(ClaimTypes.UserData,admindata.AdminType),
-    //                    new Claim(ClaimTypes.GroupSid,admindata.rank.ToString()),
-    //                    new Claim(ClaimTypes.Sid,admindata.department.ToString())
-    //                };
-    //                //Create a Identity
-    //                var identity = new ClaimsIdentity(claims, "Admin");
-    //                //Create a Principal
-    //                var principal = new ClaimsPrincipal(identity);
-    //                //Sign In
-    //                HttpContext.SignInAsync(principal);
-    //                return RedirectToAction("Index", "Home");
-    //            }
-    //            else
-    //            {
-    //                ViewBag.Message = "Password is Incorrect";
-    //                return View();
-    //            }
-    //        }
-    //        else
-    //        {
-    //            ViewBag.Message = "Admin ID is Incorrect";
-    //            return View();
-    //        }
-    //    }
-    //    public IActionResult Logout()
-    //    {
-    //        HttpContext.SignOutAsync();
-    //        return RedirectToAction("Login", "Admin");
-    //    }
-    //    public IActionResult Register()
-    //    {
-    //        return View();
-    //    }
-    //    [HttpPost]
-    //    public IActionResult Register(Admin admin)
-    //    {
-    //        if (ModelState.IsValid)
-    //        {
-    //            _db.Admins.Add(admin);
-    //            _db.SaveChanges();
-    //            return RedirectToAction("Login", "Admin");
-    //        }
-    //        return View();
-    //    }
-    //    public IActionResult Feedback()
-    //    {
-    //        return View();
-    //    }
-    //    [HttpPost]
-    //    public IActionResult Feedback(Feedback feedback)
-    //    {
-    //        if (ModelState.IsValid)
-    //        {
-    //            _db.Feedbacks.Add(feedback);
-    //            _db.SaveChanges();
-    //            return RedirectToAction("Index", "Home");
-    //        }
-    //        return View();
-    //    }
-    //}
-
-
-
-
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly Database _DB;
-        static Admin? SignedIn;
-
-        public IActionResult Index()
-        {
-            Admin? SignedIna = null;
-            var userJson = HttpContext.Session.GetString("loggedInUser");
-
-            if (SignedIna == null)
-            {
-                if (userJson != null)
-                {
-                    Admin user = JsonConvert.DeserializeObject<Admin>(userJson);
-                    SignedIna = AdminFactory.GetAdmin(user);
-
-                    return View(SignedIna);
-                }
-
-            }
-            return NotFound();
-        }
+        Admin? SignedIn;
 
         public AdminController(Database DB)
         {
+            check();
 
             //if (HttpContext.Session.IsAvailable) {
 
@@ -147,6 +40,43 @@ namespace CMH_Lahore.Controllers
             _DB = DB;
         }
 
+        public IActionResult Index()
+        {
+            check();
+            return View(SignedIn);
+        }
+
+        void check()
+        {
+            if (SignedIn == null)
+            {
+                try
+                {
+                    if (HttpContext.User != null)
+                    {
+                        var userClaim = HttpContext.User.FindFirst("UserLoggedIn");
+                        if (userClaim != null)
+                        {
+                            var userJson = userClaim.Value;
+                            var user = JsonConvert.DeserializeObject<Admin>(userJson);
+                            SignedIn = AdminFactory.GetAdmin(user);
+                            // do something with the user
+                        }
+                    }
+                    else
+                    {
+                        SignedIn = null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    SignedIn = null;
+                }
+            }
+        }
+
+
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
@@ -154,6 +84,7 @@ namespace CMH_Lahore.Controllers
             return View(obj);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Login(AdminDT admin)
         {
@@ -165,14 +96,24 @@ namespace CMH_Lahore.Controllers
 
                     if (objs != null)
                     {
-                        //var Identity = new ClaimsIdentity(new[] {
-                        //    new Claim(ClaimTypes.Actor, objs),
-                        //    new Claim(ClaimTypes.Role, "Admin")
-                        //}, "Admin Identity"); 
                         SignedIn = AdminFactory.GetAdmin(objs);
-                        HttpContext.Session.SetString("loggedInUser", JsonConvert.SerializeObject(SignedIn));
+                        //HttpContext.Session.SetString("loggedInUser", JsonConvert.SerializeObject(SignedIn));
 
-                        Admin user = JsonConvert.DeserializeObject<Admin>(HttpContext.Session.GetString("loggedInUser"));
+                        //Admin user = JsonConvert.DeserializeObject<Admin>(HttpContext.Session.GetString("loggedInUser"));
+
+
+                        var claims = new[]
+                        {
+                            new Claim(ClaimTypes.Role,objs.getadmintype()),
+                            new Claim("UserLoggedIn", JsonConvert.SerializeObject(objs)),
+                        };
+
+                        //Create a Identity
+                        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        //Create a Principal
+                        var principal = new ClaimsPrincipal(identity);
+                        //Sign In
+                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
                         return RedirectToAction("Complaints", "Admin");
                     }
@@ -194,6 +135,7 @@ namespace CMH_Lahore.Controllers
         public IActionResult Logout()
         {
             SignedIn = null;
+            HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Admin");
         }
 
@@ -205,14 +147,11 @@ namespace CMH_Lahore.Controllers
 
         public IActionResult DeleteDepartment(int? id)
         {
-            if (id > 4)
+            var DepartmentObject = _DB.Departments.Find(id);
+            if (DepartmentObject != null)
             {
-                var DepartmentObject = _DB.Departments.Find(id);
-                if (DepartmentObject != null)
-                {
-                    _DB.Departments.Remove(DepartmentObject);
-                    _DB.SaveChanges();
-                }
+                _DB.Departments.Remove(DepartmentObject);
+                _DB.SaveChanges();
             }
 
             return RedirectToAction("Department", "Admin");
@@ -226,43 +165,33 @@ namespace CMH_Lahore.Controllers
         [HttpGet]
         public IActionResult Changepswd()
         {
-            if (SignedIn != null)
-            {
-                passwordchanger Obj = new();
-                return View(Obj);
-            }
-            return RedirectToAction("Login", "Admin");
+            passwordchanger Obj = new();
+            return View(Obj);
         }
 
         [HttpPost]
         public IActionResult Changepswd(passwordchanger Obj)
         {
-            if (SignedIn != null)
-            {
-                Admin? AdminAccount = _DB.Admins.Find(SignedIn.ID);
-                if (AdminAccount != null && AdminAccount.verifypassword(Obj.OldPassword))
-                {
-                    if (Obj.NewPassword == Obj.ConfirmPassword)
-                    {
-                        AdminAccount.Password = Obj.NewPassword;
-                        _DB.SaveChanges();
-                        ModelState.AddModelError("Password-Changed", "Your Password Has Been Changed");
+            check();
 
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Password-Error", "New Password and Confirm Password do not match");
-                    }
-                    return RedirectToAction("Logout", "Admin");
+            Admin? AdminAccount = _DB.Admins.Find(SignedIn.ID);
+            if (AdminAccount != null && AdminAccount.verifypassword(Obj.OldPassword))
+            {
+                if (Obj.NewPassword == Obj.ConfirmPassword)
+                {
+                    AdminAccount.Password = Obj.NewPassword;
+                    _DB.SaveChanges();
+                    ModelState.AddModelError("Password-Changed", "Your Password Has Been Changed");
                 }
                 else
                 {
-                    ModelState.AddModelError("Password-Error", "Old Password is incorrect");
+                    ModelState.AddModelError("Password-Error", "New Password and Confirm Password do not match");
                 }
+                return RedirectToAction("Logout", "Admin");
             }
             else
             {
-                return RedirectToAction("Login");
+                ModelState.AddModelError("Password-Error", "Old Password is incorrect");
             }
             return View();
         }
@@ -270,66 +199,58 @@ namespace CMH_Lahore.Controllers
         [HttpGet]
         public IActionResult Complaints(IEnumerable<Complaint> ComplaintList, string filter = "")
         {
-            if (SignedIn != null)
-            {
-                //IEnumerable<Complaint> 
-                ComplaintList = SignedIn.GetListofComplaint(_DB);
+            check();
+            ComplaintList = SignedIn.GetListofComplaint(_DB);
 
-                //_DB.Complaints.ToList();
+            //_DB.Complaints.ToList();
 
-                //switch (filter)
-                //{
-                //    case "DateASC":
-                //        ComplaintList = ComplaintList.OrderBy(c => c.DOI);
-                //        break;
-                //    case "Status":
-                //        ComplaintList = ComplaintList.OrderBy(c => c.status);
-                //        break;
-                //}
+            //switch (filter)
+            //{
+            //    case "DateASC":
+            //        ComplaintList = ComplaintList.OrderBy(c => c.DOI);
+            //        break;
+            //    case "Status":
+            //        ComplaintList = ComplaintList.OrderBy(c => c.status);
+            //        break;
+            //}
 
-                return View(ComplaintList);
-                return View();
-            }
-            return RedirectToAction("Login", "Admin");
+            return View(ComplaintList);
         }
 
         [HttpPost]
         public IActionResult Complaints(int id, IEnumerable<Complaint> Listing, string filter = "")
         {
-            if (SignedIn != null)
+
+            check();
+
+            IEnumerable<Complaint> ComplaintList = SignedIn.GetListofComplaint(_DB);//_DB.Complaints.ToList();
+
+            switch (filter)
             {
-
-                IEnumerable<Complaint> ComplaintList = SignedIn.GetListofComplaint(_DB);//_DB.Complaints.ToList();
-
-                switch (filter)
-                {
-                    case "DateASC":
-                        ComplaintList = ComplaintList.OrderBy(c => c.DOI);
-                        break;
-                    case "Status":
-                        ComplaintList = ComplaintList.OrderBy(c => c.status);
-                        break;
-                }
-
-                return View(ComplaintList);
-                return View();
+                case "DateASC":
+                    ComplaintList = ComplaintList.OrderBy(c => c.DOI);
+                    break;
+                case "Status":
+                    ComplaintList = ComplaintList.OrderBy(c => c.status);
+                    break;
             }
-            return RedirectToAction("Login", "Admin");
+
+            return View(ComplaintList);
         }
 
         [HttpGet]
         public IActionResult ComplaintDetail(int? ID)
         {
-            if (SignedIn != null)
-            {
-                var DbObj = _DB.Complaints.Find(ID);
-                if (DbObj != null)
-                {
-                    IEnumerable<Department> ComplaintList = _DB.Departments.ToList();
-                    complaintdetaildt Obj = new(DbObj, ComplaintList, SignedIn.getadmintype(), _DB.Explainations.Find(ID), _DB.comments.Find(ID));
 
-                    return View(Obj);
-                }
+            check();
+
+            var DbObj = _DB.Complaints.Find(ID);
+            if (DbObj != null)
+            {
+                IEnumerable<Department> ComplaintList = _DB.Departments.ToList();
+                complaintdetaildt Obj = new(DbObj, ComplaintList, SignedIn.getadmintype(), _DB.Explainations.Find(ID), _DB.comments.Find(ID));
+
+                return View(Obj);
             }
             return NotFound();
         }
@@ -355,65 +276,66 @@ namespace CMH_Lahore.Controllers
         [HttpPost]
         public IActionResult ComplaintDetail(int id, int DepartmentSelection, string Explain, string ComplaintType, int CurrentComplaintStatus)
         {
-            if (SignedIn != null)
+
+            check();
+
+            var DbObj = _DB.Complaints.Find(id);
+
+            if (DbObj != null)
             {
-                var DbObj = _DB.Complaints.Find(id);
+                DbObj.ComplaintType = ComplaintType;
+                DbObj.Department = DepartmentSelection;
 
-                if (DbObj != null)
+                DbObj.status = statuscheck(CurrentComplaintStatus);
+
+                explaination entry = _DB.Explainations.Find(id);
+
+                if (entry == null)
                 {
-                    DbObj.ComplaintType = ComplaintType;
-                    DbObj.Department = DepartmentSelection;
-
-                    DbObj.status = statuscheck(CurrentComplaintStatus);
-
-                    explaination entry = _DB.Explainations.Find(id);
-
-                    if (entry == null)
-                    {
-                        entry = new();
-                        _DB.Explainations.Add(entry);
-                    }
-
-                    entry.id = id;
-                    entry.explain = Explain;
-
-                    _DB.SaveChanges();
-                    return RedirectToAction("Complaints", "Admin");
+                    entry = new();
+                    _DB.Explainations.Add(entry);
                 }
+
+                entry.id = id;
+                entry.explain = Explain;
+
+                _DB.SaveChanges();
+                return RedirectToAction("Complaints", "Admin");
             }
             return NotFound();
         }
 
         public IActionResult savecommandentcomment(int id, string Comment)
         {
-            if (SignedIn != null)
+
+            check();
+            var DbObj = _DB.Complaints.Find(id);
+
+            if (DbObj != null)
             {
-                var DbObj = _DB.Complaints.Find(id);
 
-                if (DbObj != null)
+                comment entry = _DB.comments.Find(id);
+
+                if (entry == null)
                 {
-
-                    comment entry = _DB.comments.Find(id);
-
-                    if (entry == null)
-                    {
-                        entry = new();
-                        _DB.comments.Add(entry);
-                    }
-
-                    entry.id = id;
-                    entry.commenterid = SignedIn.ID;
-                    entry.comments = Comment;
-
-                    _DB.SaveChanges();
+                    entry = new();
+                    _DB.comments.Add(entry);
                 }
+
+                entry.id = id;
+                entry.commenterid = SignedIn.ID;
+                entry.comments = Comment;
+
+                _DB.SaveChanges();
             }
             return Redirect(Request.GetTypedHeaders().Referer.ToString());
         }
 
         public IActionResult sendbacktoCO(int? id)
         {
-            if (SignedIn != null && SignedIn.getadmintype() == "AssistantCommandent" && id != null)
+            check();
+
+            if (SignedIn.getadmintype() == "AssistantCommandent" && id != null)
             {
                 var DbObj = _DB.Complaints.Find(id);
 
@@ -427,14 +349,10 @@ namespace CMH_Lahore.Controllers
             return RedirectToAction("Complaints", "Admin");
         }
 
-        public IActionResult whoamiloggedin()
-        {
-            return View(SignedIn);
-        }
 
         public IActionResult complaintstatus(int? id)
         {
-            if (SignedIn != null && id != null)
+            if ( id != null)
             {
                 var DbObj = _DB.Complaints.Find(id);
                 if (DbObj != null)

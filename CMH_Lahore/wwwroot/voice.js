@@ -128,7 +128,7 @@ function uploadtophp() {
         .then(data => {
             console.log(data);
             if (data==1) {
-                window.location.replace("/VoiceSubmissionComplete");
+                window.location.replace("/Home/VoiceSubmissionComplete");
             }
         })
         .catch(error => {

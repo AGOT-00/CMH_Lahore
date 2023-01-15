@@ -3,6 +3,8 @@ using CMH_Lahore.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
+//Real Time Deparment Remains
+
 namespace CMH_Lahore.Controllers
 {
     public class HomeController : Controller
@@ -62,7 +64,9 @@ namespace CMH_Lahore.Controllers
             //}
 
             var status = HttpContext.Session.GetInt32("VoiceIDLatest");
-            return View("submitcomplaint");
+            HttpContext.Session.SetInt32("VoiceIDLatest", 0);
+
+            return View("submitcomplaint", status);
         }
 
         [HttpGet]

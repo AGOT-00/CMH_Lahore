@@ -1,4 +1,5 @@
 using CMH_Lahore.DB;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 
+var services = builder.Services;
+
+services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Admin/Login";
+                });
 
 builder.Services.AddSession(options =>
 {
@@ -16,7 +24,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-var services = builder.Services;
 
 //DI FOR DB ACCESS
 services.AddDbContext<Database>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
